@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">EnergyRing</string>
+    <string name="how_to_hide_in_recent">如何在最近任务隐藏？</string>
+    <string name="help_to_hide_in_recent">通过按返回键退出就可以从最近任务隐藏。\n为了后台能力，先在此进入最近任务，将此卡片上锁。</string>
+    <string name="i_know">我知道了</string>
+    <string name="pre_set">预设</string>
+    <string name="ring_width">宽度</string>
+    <string name="size">大小</string>
+    <string name="position_of_vertical">垂直位置</string>
+    <string name="position_of_horizontal">水平位置</string>
+    <string name="model_preset">预设机型</string>
+    <string name="copy">复制</string>
+    <string name="import_from_clipboard">从剪切板导入</string>
+    <string name="view_config">查看</string>
+    <string name="text_import">导入</string>
+    <string name="clipboard_content">剪切板内容</string>
+    <string name="empty_in_clipboard">前切板无内容</string>
+    <string name="about">关于</string>
+    <string name="donate">捐赠</string>
+    <string name="hint_preset_share">欢迎将配置分享至酷安评论区，底部[查看]按钮可复制配置</string>
+    <string name="config_data">配置数据</string>
+    <string name="way_donate">捐赠方式</string>
+    <string name="hint_wx_donate">请截屏后使用微信扫码</string>
+    <string name="request_float_window_permission">请开启悬浮窗权限</string>
+    <string name="author">作者</string>
+    <string name="no_browser_available">无可用浏览器</string>
+    <string name="alipay_is_not_installed">未安装支付宝</string>
+    <array name="way_of_donate">
+        <item>支付宝</item>
+        <item>微信</item>
+    </array>
+</resources>

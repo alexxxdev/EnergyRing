@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_foreground"
+    android:fitsSystemWindows="true"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:gravity="end"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        tools:context=".MainActivity">
+
+        <ImageView
+            android:id="@+id/about_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="5dp"
+            android:src="@drawable/ic_info" />
+
+        <TextView
+            android:id="@+id/pick_preset_view"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/model_preset"
+            android:textColor="@color/colorPrimary" />
+
+        <cn.vove7.energy_ring.view.AccurateSeekBar
+            android:id="@+id/strokeWidth_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:max="20"
+            app:min="2"
+            app:title="@string/ring_width" />
+
+        <cn.vove7.energy_ring.view.AccurateSeekBar
+            android:id="@+id/posx_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:max="2000"
+            app:min="0"
+            app:title="@string/position_of_horizontal" />
+
+        <cn.vove7.energy_ring.view.AccurateSeekBar
+            android:id="@+id/posy_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:max="2000"
+            app:min="0"
+            app:title="@string/position_of_vertical" />
+
+        <cn.vove7.energy_ring.view.AccurateSeekBar
+            android:id="@+id/size_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:max="200"
+            app:min="20"
+            app:title="@string/size" />
+
+        <cn.vove7.energy_ring.view.AccurateSeekBar
+            android:id="@+id/rotateDuration_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:max="8"
+            app:min="1"
+            app:title="转速(充电动画)" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/view_info_view"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/view_config" />
+
+            <Button
+                android:id="@+id/import_view"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/import_from_clipboard" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

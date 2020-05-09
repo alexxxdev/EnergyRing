@@ -1,0 +1,12 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/app_foreground</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="md_corner_radius">15dp</item>
+    </style>
+
+</resources>
