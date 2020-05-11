@@ -189,7 +189,8 @@ class MainActivity : AppCompatActivity() {
             if (ds.isEmpty()) {
                 ds = allDs
             }
-            listItems(items = ds.map { it.name }) { _, i, _ ->
+            listItems(items = ds.map { it.name }, waitForPositiveButton = false) { _, i, _ ->
+                dismiss()
                 applyConfig(ds[i])
             }
             checkBoxPrompt(R.string.display_only_this_model, isCheckedDefault = ds.size != allDs.size) { c ->
