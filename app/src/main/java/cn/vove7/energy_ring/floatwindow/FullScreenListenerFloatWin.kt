@@ -9,6 +9,7 @@ import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.BuildConfig
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.listener.RotationListener
+import cn.vove7.energy_ring.util.Config
 
 /**
  * # FullScreenListenerFloatWin
@@ -30,20 +31,20 @@ object FullScreenListenerFloatWin {
             }
 
             override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+
                 super.onLayout(changed, left, top, right, bottom)
                 val ps = intArrayOf(0, 0)
                 getLocationOnScreen(ps)
+                isFullScreen = ps[1] == 0
+                if (!Config.autoHideFullscreen) {
+                    return
+                }
                 when {
-                    ps[1] == 0 -> {//全屏
-                        isFullScreen = true
+                    isFullScreen -> {//全屏
                         FloatRingWindow.hide()
                     }
                     RotationListener.canShow -> {
                         FloatRingWindow.show()
-                        isFullScreen = false
-                    }
-                    else -> {
-                        isFullScreen = false
                     }
                 }
             }

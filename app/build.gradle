@@ -50,6 +50,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
 
+    implementation 'com.google.android.material:material:1.1.0'
+
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
     implementation 'com.afollestad.material-dialogs:color:3.3.0'

@@ -23,8 +23,8 @@ class App : Application() {
         val wm = getSystemService(WindowManager::class.java)
         FloatRingWindow.start(wm!!)
 
-        if (Config.autoHide) {
-            PowerEventReceiver.start()
+        PowerEventReceiver.start()
+        if (Config.autoHideRotate) {
             RotationListener.start()
         }
     }

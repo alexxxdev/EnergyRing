@@ -14,7 +14,8 @@ import cn.vove7.smartkey.key.smartKey
 @Config("app")
 object Config {
 
-    val autoHide by smartKey(true)
+    var autoHideRotate by smartKey(true)
+    var autoHideFullscreen by smartKey(true)
 
     var rotateDuration by smartKey(3000)
 

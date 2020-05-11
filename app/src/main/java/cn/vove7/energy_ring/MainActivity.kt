@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
+import cn.vove7.energy_ring.listener.RotationListener
 import cn.vove7.energy_ring.util.Config
 import cn.vove7.energy_ring.util.DonateHelper
 import cn.vove7.energy_ring.util.isDarkMode
@@ -54,6 +55,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun listenSeekBar() {
+        fullscreen_auto_hide.isChecked = Config.autoHideFullscreen
+        rotate_auto_hide.isChecked = Config.autoHideRotate
+
+        fullscreen_auto_hide.setOnCheckedChangeListener { buttonView, isChecked ->
+            Config.autoHideFullscreen = isChecked
+        }
+        rotate_auto_hide.setOnCheckedChangeListener { buttonView, isChecked ->
+            Config.autoHideRotate = isChecked
+            if (isChecked && !RotationListener.enabled) {
+                RotationListener.start()
+            } else {
+                RotationListener.stop()
+            }
+        }
         rotateDuration_seek_bar.onChange { progress, fromUser ->
             Config.rotateDuration = (rotateDuration_seek_bar.maxVal + 1 - progress) * 1000
             if (FloatRingWindow.isCharging) {
@@ -82,8 +97,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (!firstIn && Config.tipOfRecent) {
-            Config.tipOfRecent = false
-
             MaterialDialog(this).show {
                 title(R.string.how_to_hide_in_recent)
                 message(R.string.help_to_hide_in_recent)
@@ -97,6 +110,7 @@ class MainActivity : AppCompatActivity() {
                         getActionButton(WhichButton.POSITIVE).isEnabled = true
                         positiveButton(R.string.i_know) {
                             dismiss()
+                            Config.tipOfRecent = false
                             showAbout(null)
                         }
                     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_foreground"
+    android:background="@color/app_background"
     android:fitsSystemWindows="true"
     android:gravity="center_horizontal"
     android:orientation="vertical"
@@ -45,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="20dp"
             app:max="20"
             app:min="2"
@@ -55,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="20dp"
             app:max="2000"
             app:min="0"
@@ -65,6 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="20dp"
             app:max="2000"
             app:min="0"
@@ -75,6 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="20dp"
             app:max="200"
             app:min="20"
@@ -85,6 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="20dp"
             app:max="8"
             app:min="1"
@@ -92,13 +97,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
             <Button
                 android:id="@+id/view_info_view"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:text="@string/view_config" />
 
@@ -107,8 +115,28 @@
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="2dp"
                 android:layout_weight="1"
                 android:text="@string/import_from_clipboard" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/rotate_auto_hide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[屏幕方向切换]自动隐藏" />
+
+            <CheckBox
+                android:id="@+id/fullscreen_auto_hide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[全屏]自动隐藏" />
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

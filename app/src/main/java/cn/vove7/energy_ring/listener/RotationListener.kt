@@ -9,6 +9,7 @@ import android.view.Surface
 import android.view.WindowManager
 import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
+import cn.vove7.energy_ring.floatwindow.FullScreenListenerFloatWin
 
 
 /**
@@ -41,7 +42,7 @@ object RotationListener : BroadcastReceiver() {
         rotation = roa
         Log.d("Debug :", "onReceive  ----> $roa")
 
-        if (roa == Surface.ROTATION_0) {
+        if (roa == Surface.ROTATION_0 && !FullScreenListenerFloatWin.isFullScreen) {
             Log.d("Debug :", "onReceive  ----> $roa show")
             FloatRingWindow.show()
         } else {
