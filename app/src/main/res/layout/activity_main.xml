@@ -85,7 +85,17 @@
             app:title="@string/size" />
 
         <cn.vove7.energy_ring.view.AccurateSeekBar
-            android:id="@+id/rotateDuration_seek_bar"
+            android:id="@+id/default_rotateDuration_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            app:max="60"
+            app:min="15"
+            app:title="转速[未充电]" />
+        <cn.vove7.energy_ring.view.AccurateSeekBar
+            android:id="@+id/charging_rotateDuration_seek_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -93,7 +103,7 @@
             android:layout_marginRight="20dp"
             app:max="8"
             app:min="1"
-            app:title="转速(充电动画)" />
+            app:title="转速[充电时]" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -129,13 +139,13 @@
                 android:id="@+id/rotate_auto_hide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="[屏幕方向切换]自动隐藏" />
+                android:text="@string/auto_hide_on_rotate" />
 
             <CheckBox
                 android:id="@+id/fullscreen_auto_hide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="[全屏]自动隐藏" />
+                android:text="@string/auto_hide_on_fullscreen" />
 
         </LinearLayout>
     </LinearLayout>

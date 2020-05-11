@@ -25,6 +25,8 @@
     <string name="author">作者</string>
     <string name="no_browser_available">无可用浏览器</string>
     <string name="alipay_is_not_installed">未安装支付宝</string>
+    <string name="auto_hide_on_rotate">[屏幕方向切换]自动隐藏</string>
+    <string name="auto_hide_on_fullscreen">[全屏]自动隐藏</string>
     <array name="way_of_donate">
         <item>支付宝</item>
         <item>微信</item>

@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -46,12 +47,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshData() {
-
         strokeWidth_seek_bar.progress = Config.strokeWidth.toInt()
         posx_seek_bar.progress = Config.posXf
         posy_seek_bar.progress = Config.posYf
         size_seek_bar.progress = Config.size
-        rotateDuration_seek_bar.progress = (rotateDuration_seek_bar.maxVal + 1 - Config.rotateDuration / 1000)
+        charging_rotateDuration_seek_bar.progress = (charging_rotateDuration_seek_bar.maxVal + 1 - Config.chargingRotateDuration / 1000)
+        default_rotateDuration_seek_bar.progress = (default_rotateDuration_seek_bar.maxVal + default_rotateDuration_seek_bar.minVal -
+                (Config.defaultRotateDuration) / 1000)
+
     }
 
     private fun listenSeekBar() {
@@ -69,10 +72,17 @@ class MainActivity : AppCompatActivity() {
                 RotationListener.stop()
             }
         }
-        rotateDuration_seek_bar.onChange { progress, fromUser ->
-            Config.rotateDuration = (rotateDuration_seek_bar.maxVal + 1 - progress) * 1000
+        charging_rotateDuration_seek_bar.onStop { progress ->
+            Config.chargingRotateDuration = (charging_rotateDuration_seek_bar.maxVal + 1 - progress) * 1000
             if (FloatRingWindow.isCharging) {
-                FloatRingWindow.reloadAnimation()
+                FloatRingWindow.reloadAnimation(Config.chargingRotateDuration)
+            }
+        }
+        default_rotateDuration_seek_bar.onStop { progress -> //[15,60]
+            Config.defaultRotateDuration = (default_rotateDuration_seek_bar.maxVal - (progress - default_rotateDuration_seek_bar.minVal)) * 1000
+            Log.d("Debug :", "listenSeekBar  ----> ${Config.defaultRotateDuration}")
+            if (!FloatRingWindow.isCharging) {
+                FloatRingWindow.reloadAnimation(Config.defaultRotateDuration)
             }
         }
         strokeWidth_seek_bar.onChange { progress, fromUser ->

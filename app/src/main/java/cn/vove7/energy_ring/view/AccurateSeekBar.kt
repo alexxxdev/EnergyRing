@@ -55,10 +55,28 @@ class AccurateSeekBar @JvmOverloads constructor(
         minus_view.setOnClickListener {
             seek_bar_view.progress = seek_bar_view.progress - 1
         }
+        seek_bar_view.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                onChangeAction?.invoke(progress, fromUser)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                onStopAction?.invoke(seekBar.progress)
+            }
+        })
     }
 
     fun onChange(lis: (progress: Int, fromUser: Boolean) -> Unit) {
         seek_bar_view.onChange(lis)
+    }
+
+    private var onStopAction: ((progress: Int) -> Unit)? = null
+
+    private var onChangeAction: ((progress: Int, fromUser: Boolean) -> Unit)? = null
+
+    fun onStop(stopAction: ((progress: Int) -> Unit)) {
+        onStopAction = stopAction
     }
 
     private fun SeekBar.onChange(lis: (progress: Int, fromUser: Boolean) -> Unit) {

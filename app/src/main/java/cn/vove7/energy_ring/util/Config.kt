@@ -1,7 +1,6 @@
 package cn.vove7.energy_ring.util
 
 import android.graphics.Color
-import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.smartkey.annotation.Config
 import cn.vove7.smartkey.key.smartKey
 
@@ -17,7 +16,11 @@ object Config {
     var autoHideRotate by smartKey(true)
     var autoHideFullscreen by smartKey(true)
 
-    var rotateDuration by smartKey(3000)
+    //充电旋转速度 跟随功率？
+    var chargingRotateDuration by smartKey(3000)
+
+    //默认旋转速度
+    var defaultRotateDuration by smartKey(30000)
 
     var strokeWidth by smartKey(8f)
 

@@ -10,10 +10,9 @@ import android.os.BatteryManager
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.util.Log
-import android.util.Size
 import android.view.Gravity
+import android.view.View
 import android.view.WindowManager
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
@@ -97,12 +96,15 @@ object FloatRingWindow {
         isShowing = true
         FullScreenListenerFloatWin.start(wm)
         try {
+            bodyView.visibility = View.VISIBLE
             wm.addView(bodyView, layoutParams)
         } catch (e: Exception) {
             e.printStackTrace()
         }
         if (charging || isCharging) {
             onCharging()
+        } else {
+            reloadAnimation(Config.defaultRotateDuration)
         }
     }
 
@@ -122,30 +124,31 @@ object FloatRingWindow {
 
     fun onCharging() {
         charging = true
-        reloadAnimation()
+        reloadAnimation(Config.chargingRotateDuration)
     }
 
 
-    fun reloadAnimation() {
+    fun reloadAnimation(speedDuration: Int = 5000) {
         if (!isShowing) {
             return
         }
-        rotateAnimator?.cancel()
-        rotateAnimator = buildAnimator().also {
-            it.start()
+        if (::rotateAnimator.isInitialized) {
+            rotateAnimator.cancel()
         }
+        rotateAnimator = buildAnimator(ringView.rotation, speedDuration)
+        rotateAnimator.start()
     }
 
-    var rotateAnimator: Animator? = null
+    private lateinit var rotateAnimator: Animator
 
     private fun buildAnimator(
             start: Float = 0f,
-            end: Float = 360f,
-            rc: Int = -1,
-            dur: Int = Config.rotateDuration
+            dur: Int
     ): Animator {
+        val end: Float = 360 + start
+
         return ValueAnimator.ofFloat(start, end).apply {
-            repeatCount = rc
+            repeatCount = -1
             interpolator = LinearInterpolator()
             duration = dur.toLong()
             addUpdateListener {
@@ -154,26 +157,18 @@ object FloatRingWindow {
         }
     }
 
-    private fun stopAnimationSmooth() {
-        rotateAnimator?.cancel()
-        val sa = ringView.rotation
-        buildAnimator(start = sa, end = 360f, rc = 0, dur = ((360 - sa) * Config.rotateDuration / 360).toInt()).also {
-            it.start()
-        }
-    }
-
     fun onDisCharging() {
         charging = false
-        stopAnimationSmooth()
+        reloadAnimation(Config.defaultRotateDuration)
     }
 
     fun hide() {
         if (!isShowing) {
             return
         }
+        bodyView.visibility = View.INVISIBLE
         isShowing = false
-        rotateAnimator?.cancel()
-        wm.removeView(bodyView)
+        rotateAnimator.pause()
     }
 
     fun show() {
