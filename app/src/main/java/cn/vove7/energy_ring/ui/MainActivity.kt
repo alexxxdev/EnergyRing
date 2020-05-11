@@ -129,9 +129,9 @@ class MainActivity : AppCompatActivity() {
                 cancelable(false)
                 cancelOnTouchOutside(false)
                 noAutoDismiss()
-                positiveButton(text = "5s")
+                positiveButton(text = "10s")
                 getActionButton(WhichButton.POSITIVE).isEnabled = false
-                object : CountDownTimer(5000, 1000) {
+                object : CountDownTimer(10000, 1000) {
                     override fun onFinish() {
                         getActionButton(WhichButton.POSITIVE).isEnabled = true
                         positiveButton(R.string.i_know) {
