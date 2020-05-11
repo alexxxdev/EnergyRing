@@ -5,9 +5,10 @@ import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
-import androidx.core.content.ContextCompat
 import cn.vove7.energy_ring.App
+import cn.vove7.energy_ring.BuildConfig
 import cn.vove7.energy_ring.R
+import cn.vove7.energy_ring.listener.RotationListener
 
 /**
  * # FullScreenListenerFloatWin
@@ -17,17 +18,33 @@ import cn.vove7.energy_ring.R
  */
 object FullScreenListenerFloatWin {
 
+    var isFullScreen = false
+
     private val view by lazy {
         object : View(App.INS) {
+
+            init {
+                if (BuildConfig.DEBUG) {
+                    setBackgroundColor(R.color.colorPrimary)
+                }
+            }
 
             override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
                 super.onLayout(changed, left, top, right, bottom)
                 val ps = intArrayOf(0, 0)
                 getLocationOnScreen(ps)
-                if (ps[1] == 0) {//全屏
-                    FloatRingWindow.hide()
-                } else {
-                    FloatRingWindow.show()
+                when {
+                    ps[1] == 0 -> {//全屏
+                        isFullScreen = true
+                        FloatRingWindow.hide()
+                    }
+                    RotationListener.canShow -> {
+                        FloatRingWindow.show()
+                        isFullScreen = false
+                    }
+                    else -> {
+                        isFullScreen = false
+                    }
                 }
             }
         }
@@ -46,7 +63,7 @@ object FullScreenListenerFloatWin {
                 layoutInDisplayCutoutMode =
                     WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
             }
-            format = PixelFormat.TRANSLUCENT
+            format = PixelFormat.RGBA_8888
             gravity = Gravity.TOP or Gravity.START
         }
 

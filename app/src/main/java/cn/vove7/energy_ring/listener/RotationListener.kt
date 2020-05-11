@@ -19,15 +19,26 @@ import cn.vove7.energy_ring.floatwindow.FloatRingWindow
  */
 object RotationListener : BroadcastReceiver() {
 
+    var enabled = false
     fun start() {
         val intentFilter = IntentFilter("android.intent.action.CONFIGURATION_CHANGED")
         App.INS.registerReceiver(this, intentFilter)
+        enabled = true
     }
+
+    fun stop() {
+        enabled = false
+        App.INS.unregisterReceiver(this)
+    }
+
+    var rotation = 0
+
+    val canShow: Boolean get() = if (!enabled) true else (rotation == 0)
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val wm = App.INS.getSystemService(WindowManager::class.java)!!
         val roa = wm.defaultDisplay.rotation
-        wm.defaultDisplay.mode.modeId
+        rotation = roa
         Log.d("Debug :", "onReceive  ----> $roa")
 
         if (roa == Surface.ROTATION_0) {

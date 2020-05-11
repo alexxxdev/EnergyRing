@@ -33,12 +33,6 @@ import kotlin.concurrent.thread
  * 2020/5/8
  */
 object FloatRingWindow {
-    val screenSize: Size
-        get() {
-            val dm = DisplayMetrics()
-            wm.defaultDisplay.getMetrics(dm)
-            return Size(dm.widthPixels, dm.heightPixels)
-        }
 
     private val hasPermission
         get() = Settings.canDrawOverlays(App.INS)

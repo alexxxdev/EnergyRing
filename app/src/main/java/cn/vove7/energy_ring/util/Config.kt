@@ -14,6 +14,8 @@ import cn.vove7.smartkey.key.smartKey
 @Config("app")
 object Config {
 
+    val autoHide by smartKey(true)
+
     var rotateDuration by smartKey(3000)
 
     var strokeWidth by smartKey(8f)
@@ -27,18 +29,18 @@ object Config {
 
     //2千分比值
     var posXf by smartKey(148)
-    val posX get() = ((posXf / 2000f) * FloatRingWindow.screenSize.width).toInt()
+    val posX get() = ((posXf / 2000f) * screenWidth).toInt()
 
     //2千分比值
     var posYf by smartKey(22)
-    val posY get() = ((posYf / 2000f) * FloatRingWindow.screenSize.height).toInt()
+    val posY get() = ((posYf / 2000f) * screenHeight).toInt()
 
     var sizef by smartKey(0.06736f)
 
     var size: Int
-        get() = ((sizef * FloatRingWindow.screenSize.width).toInt())
+        get() = ((sizef * screenWidth).toInt())
         set(value) {
-            sizef = value.toFloat() / FloatRingWindow.screenSize.width
+            sizef = value.toFloat() / screenWidth
         }
 
     var tipOfRecent by smartKey(true)
