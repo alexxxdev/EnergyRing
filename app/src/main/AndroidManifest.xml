@@ -15,7 +15,7 @@
         <meta-data
             android:name="android.notch_support"
             android:value="false" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

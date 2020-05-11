@@ -4,7 +4,7 @@
     <string name="help_to_hide_in_recent">通过按返回键退出就可以从最近任务隐藏。\n为了后台能力，先在此进入最近任务，将此卡片上锁。</string>
     <string name="i_know">我知道了</string>
     <string name="pre_set">预设</string>
-    <string name="ring_width">宽度</string>
+    <string name="ring_width">线条粗细</string>
     <string name="size">大小</string>
     <string name="position_of_vertical">垂直位置</string>
     <string name="position_of_horizontal">水平位置</string>
@@ -17,7 +17,7 @@
     <string name="empty_in_clipboard">前切板无内容</string>
     <string name="about">关于</string>
     <string name="donate">捐赠</string>
-    <string name="hint_preset_share">欢迎将配置分享至酷安评论区，底部[查看]按钮可复制配置</string>
+    <string name="hint_preset_share">欢迎将配置分享至酷安评论区，底部[查看]按钮可复制配置\n下面机型并不一定完全适配，可自行微调。</string>
     <string name="config_data">配置数据</string>
     <string name="way_donate">捐赠方式</string>
     <string name="hint_wx_donate">请截屏后使用微信扫码</string>
@@ -27,6 +27,10 @@
     <string name="alipay_is_not_installed">未安装支付宝</string>
     <string name="auto_hide_on_rotate">[屏幕方向切换]自动隐藏</string>
     <string name="auto_hide_on_fullscreen">[全屏]自动隐藏</string>
+    <string name="color_setting">颜色设置(长按删除)</string>
+    <string name="ring_bg_color">背景色</string>
+    <string name="rotate_speed_when_charging">转速[充电时]</string>
+    <string name="rotate_speed_not_charging">转速[未充电]</string>
     <array name="way_of_donate">
         <item>支付宝</item>
         <item>微信</item>

@@ -15,8 +15,10 @@
             android:id="@+id/title_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:padding="10dp"
-            android:textSize="16sp" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,12 +29,13 @@
 
             <TextView
                 android:id="@+id/minus_view"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="?attr/selectableItemBackground"
                 android:gravity="center"
+                android:paddingBottom="5dp"
                 android:text="-"
-                android:textSize="30sp" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
 
             <SeekBar
                 android:id="@+id/seek_bar_view"
@@ -42,12 +45,13 @@
 
             <TextView
                 android:id="@+id/plus_view"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="?attr/selectableItemBackground"
                 android:gravity="center"
+                android:paddingBottom="5dp"
                 android:text="+"
-                android:textSize="20sp" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
 
         </LinearLayout>
 

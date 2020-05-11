@@ -16,10 +16,10 @@ android {
 
     defaultConfig {
         applicationId "cn.vove7.energy_ring"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 12
+        versionName "1.1"
 
     }
 

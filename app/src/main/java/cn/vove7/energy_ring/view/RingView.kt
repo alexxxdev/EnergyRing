@@ -4,7 +4,8 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import java.lang.Float.min
+import cn.vove7.energy_ring.BuildConfig
+import kotlin.math.min
 
 
 /**
@@ -27,7 +28,13 @@ class RingView @JvmOverloads constructor(
             invalidate()
         }
 
-    var strokeWidth = 15f
+    var bgColor = if (BuildConfig.DEBUG) Color.argb(10, 10, 10, 10) else Color.TRANSPARENT
+        set(value) {
+            field = value
+            bgShader = SweepGradient(0f, 0f, intArrayOf(value, value), null)
+        }
+
+    var strokeWidthF = 8f
         set(value) {
             field = value
             invalidate()
@@ -47,12 +54,18 @@ class RingView @JvmOverloads constructor(
             Color.RED
     )
         set(value) {
-            field = value
+            field = value.let {
+                when (it.size) {
+                    1 -> intArrayOf(it[0], it[0])
+                    0 -> intArrayOf(Color.RED, Color.GREEN, Color.BLUE, Color.RED)
+                    else -> it
+                }
+            }
             shader = SweepGradient(0f, 0f, doughnutColors, null)
         }
 
     private var shader = SweepGradient(0f, 0f, doughnutColors, null)
-
+    private var bgShader = SweepGradient(0f, 0f, intArrayOf(bgColor, bgColor), null)
 
     private fun initPaint() {
         paint.reset()
@@ -64,14 +77,24 @@ class RingView @JvmOverloads constructor(
         val size = min((width / 2).toFloat(), (height / 2).toFloat())
         canvas.translate(size, size)
         canvas.rotate(-90f)
+        val strokeWidth = size * (strokeWidthF / 100f)
         val r = size - strokeWidth / 2
         initPaint()
-        //圆环外接矩形
 
+        //圆环外接矩形
         rectF.set(-r, -r, r, r)
+
+        //背景
+        paint.shader = bgShader
+        paint.strokeWidth = strokeWidth
+        paint.style = Paint.Style.STROKE
+        canvas.drawArc(rectF, 0f, 360f, true, paint)
+
+        //圆环
         paint.strokeWidth = strokeWidth
         paint.style = Paint.Style.STROKE
         paint.shader = shader
         canvas.drawArc(rectF, 0f, 360f * progressf, false, paint)
+
     }
 }

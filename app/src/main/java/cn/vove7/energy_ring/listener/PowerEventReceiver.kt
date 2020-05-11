@@ -54,7 +54,6 @@ object PowerEventReceiver : BroadcastReceiver() {
             Intent.ACTION_BATTERY_LOW -> {//低电量
             }
             Intent.ACTION_BATTERY_CHANGED -> {
-                isCharging = true
                 val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) //电量的刻度
                 val maxLevel = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1) //最大
                 val l = level * 1000 / maxLevel

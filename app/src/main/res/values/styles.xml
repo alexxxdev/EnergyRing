@@ -6,8 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/app_background</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="md_corner_radius">15dp</item>
+        <item name="android:navigationBarColor">@color/app_background</item>
         <item name="cardBackgroundColor">@color/app_foreground</item>
+
+        <item name="md_corner_radius">15dp</item>
+        <item name="md_color_button_text">@color/colorAccent</item>
     </style>
 
 </resources>

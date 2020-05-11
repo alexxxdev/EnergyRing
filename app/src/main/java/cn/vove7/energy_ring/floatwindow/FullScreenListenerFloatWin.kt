@@ -54,7 +54,9 @@ object FullScreenListenerFloatWin {
         get() = WindowManager.LayoutParams(
                 10, 10,
                 100, 0,
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                else WindowManager.LayoutParams.TYPE_PHONE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
                         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                         WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
