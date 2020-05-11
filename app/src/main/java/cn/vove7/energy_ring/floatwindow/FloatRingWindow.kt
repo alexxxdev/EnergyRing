@@ -1,25 +1,28 @@
 package cn.vove7.energy_ring.floatwindow
 
-import android.animation.Animator
-import android.animation.ValueAnimator
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.PixelFormat
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
-import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.Toast
 import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.R
-import cn.vove7.energy_ring.listener.PowerEventReceiver
+import cn.vove7.energy_ring.energystyle.DoubleRingStyle
+import cn.vove7.energy_ring.energystyle.EnergyStyle
+import cn.vove7.energy_ring.energystyle.PillStyle
+import cn.vove7.energy_ring.energystyle.RingStyle
+import cn.vove7.energy_ring.model.ShapeType
 import cn.vove7.energy_ring.util.Config
-import cn.vove7.energy_ring.view.RingView
+import cn.vove7.energy_ring.util.batteryLevel
+import cn.vove7.energy_ring.util.weakLazy
 import java.lang.Thread.sleep
 import kotlin.concurrent.thread
 
@@ -35,13 +38,18 @@ object FloatRingWindow {
     private val hasPermission
         get() = Settings.canDrawOverlays(App.INS)
 
-    val powerManager by lazy {
-        App.INS.getSystemService(PowerManager::class.java)!!
+    private val displayEnergyStyleDelegate = weakLazy {
+        when (Config.energyType) {
+            ShapeType.RING -> RingStyle()
+            ShapeType.DOUBLE_RING -> DoubleRingStyle()
+            ShapeType.PILL -> PillStyle()
+        } as EnergyStyle
     }
+    private val displayEnergyStyle by displayEnergyStyleDelegate
 
-    lateinit var wm: WindowManager
-    fun start(wm: WindowManager) {
-        FloatRingWindow.wm = wm
+    private val wm: WindowManager = App.windowsManager
+
+    fun start() {
         if (hasPermission) {
             showInternal()
         } else {
@@ -86,39 +94,33 @@ object FloatRingWindow {
 
     private val bodyView by lazy {
         FrameLayout(App.INS).apply {
-            addView(ringView)
+            addView(displayEnergyStyle.displayView)
         }
     }
 
-    private val ringView by lazy {
-        RingView(App.INS).apply {
-            strokeWidthF = Config.strokeWidthF
-            progress = batteryLevel
-            doughnutColors = Config.colors
-            bgColor = Config.ringBgColor
+    fun onChangeShapeType() {
+        displayEnergyStyle.onRemove()
+        displayEnergyStyleDelegate.clearWeakValue()
+        bodyView.apply {
+            removeAllViews()
+            addView(displayEnergyStyle.displayView)
         }
+        showInternal()
     }
 
     private fun showInternal() {
         isShowing = true
-        FullScreenListenerFloatWin.start(wm)
+        FullScreenListenerFloatWin.start()
         try {
             bodyView.visibility = View.VISIBLE
+            displayEnergyStyle.update(batteryLevel)
             if (bodyView.tag != true) {
                 wm.addView(bodyView, layoutParams)
                 bodyView.tag = true
-                if (charging || isCharging) {
-                    PowerEventReceiver.isCharging = true
-                    onCharging()
-                } else {
-                    reloadAnimation(Config.defaultRotateDuration)
-                }
+
+                reloadAnimation()
             } else {
-                if (!rotateAnimator.isPaused) {
-                    rotateAnimator.start()
-                } else {
-                    rotateAnimator.resume()
-                }
+                displayEnergyStyle.resumeAnimator()
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -129,68 +131,21 @@ object FloatRingWindow {
         if (!isShowing) {
             return
         }
-        ringView.apply {
-            strokeWidthF = Config.strokeWidthF
-            p?.let { progress = it }
-            doughnutColors = Config.colors
-            bgColor = Config.ringBgColor
-        }
+        displayEnergyStyle.update(p)
         wm.updateViewLayout(bodyView, layoutParams)
     }
 
-    private var charging = false
-
     fun onCharging() {
-        charging = true
-        reloadAnimation(Config.chargingRotateDuration)
+        reloadAnimation()
     }
 
 
-    fun reloadAnimation(speedDuration: Int = 5000) {
-        if (::rotateAnimator.isInitialized) {
-            rotateAnimator.cancel()
-        }
-        rotateAnimator = buildAnimator(ringView.rotation, speedDuration)
-        if (!isShowing) {
-            return
-        }
-        rotateAnimator.start()
-    }
-
-    private lateinit var rotateAnimator: Animator
-
-    private fun buildAnimator(
-            start: Float = 0f,
-            dur: Int
-    ): Animator {
-        val end: Float = 360 + start
-
-        var lastUpdate = 0L
-
-        return ValueAnimator.ofFloat(start, end).apply {
-            repeatCount = -1
-            interpolator = LinearInterpolator()
-            duration = dur.toLong()
-            addUpdateListener {
-                if (!powerManager.isInteractive) {
-                    return@addUpdateListener
-                }
-                if (PowerEventReceiver.isCharging) {
-                    ringView.rotation = it.animatedValue as Float
-                } else {
-                    val now = SystemClock.elapsedRealtime()
-                    if (now - lastUpdate > 2000) {
-                        lastUpdate = now
-                        ringView.rotation = it.animatedValue as Float
-                    }
-                }
-            }
-        }
+    fun reloadAnimation() {
+        displayEnergyStyle.reloadAnimation()
     }
 
     fun onDisCharging() {
-        charging = false
-        reloadAnimation(Config.defaultRotateDuration)
+        reloadAnimation()
     }
 
     fun hide() {
@@ -199,7 +154,7 @@ object FloatRingWindow {
         }
         bodyView.visibility = View.INVISIBLE
         isShowing = false
-        rotateAnimator.pause()
+        displayEnergyStyle.onHide()
     }
 
     fun show() {
@@ -209,24 +164,4 @@ object FloatRingWindow {
         showInternal()
     }
 
-    val isCharging: Boolean
-        get() = {
-            val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-            val intent = App.INS.registerReceiver(null, filter)
-            val i = intent?.getIntExtra(BatteryManager.EXTRA_STATUS,
-                    BatteryManager.BATTERY_STATUS_UNKNOWN) == BatteryManager.BATTERY_STATUS_CHARGING
-            val j = intent?.extras?.get("charge_status") == "1"
-            Log.d("---", "isCharging ---> $i")
-            i || j
-        }.invoke()
-
-    val batteryLevel: Int
-        get() {
-            val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-            val intent = App.INS.registerReceiver(null, filter)
-                ?: return 50
-            val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 100) //电量的刻度
-            val maxLevel = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) //最大
-            return level * 1000 / maxLevel
-        }
 }

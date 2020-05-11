@@ -1,9 +1,13 @@
 package cn.vove7.energy_ring.util
 
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Configuration
 import android.graphics.Color
+import android.os.BatteryManager
 import android.util.DisplayMetrics
+import android.util.Log
 import android.util.Size
 import android.view.WindowManager
 import cn.vove7.energy_ring.App
@@ -26,9 +30,7 @@ val isDarkMode: Boolean
 //正常 rotation 时的高宽
 val screenSize: Size by lazy {
     val dm = DisplayMetrics()
-    FloatRingWindow.wm.defaultDisplay.getMetrics(dm)
-
-    FloatRingWindow.wm.defaultDisplay.getMetrics(dm)
+    App.windowsManager.defaultDisplay.getMetrics(dm)
     val roa = App.INS.getSystemService(WindowManager::class.java)!!.defaultDisplay.rotation
     if (roa == 0 || roa == 2) {
         Size(dm.widthPixels, dm.heightPixels)
@@ -114,4 +116,25 @@ val Int.antiColor: Int
         return if (this shr 24 < 30f) {
             if (isDarkMode) Color.WHITE else Color.BLACK
         } else anc
+    }
+
+val isOnCharging: Boolean
+    get() = {
+        val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        val intent = App.INS.registerReceiver(null, filter)
+        val i = intent?.getIntExtra(BatteryManager.EXTRA_STATUS,
+                BatteryManager.BATTERY_STATUS_UNKNOWN) == BatteryManager.BATTERY_STATUS_CHARGING
+        val j = intent?.extras?.get("charge_status") == "1"
+        Log.d("---", "isCharging ---> $i")
+        i || j
+    }.invoke()
+
+val batteryLevel: Int
+    get() {
+        val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        val intent = App.INS.registerReceiver(null, filter)
+            ?: return 50
+        val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 100) //电量的刻度
+        val maxLevel = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) //最大
+        return level * 1000 / maxLevel
     }

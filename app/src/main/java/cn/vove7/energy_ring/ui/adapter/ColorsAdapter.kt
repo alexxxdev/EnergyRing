@@ -57,7 +57,7 @@ class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorViewHolder>() {
                         return@setOnLongClickListener true
                     }
                     kotlin.runCatching {
-                        Config.colors = cs.asList().toMutableList().apply { removeAt(position) }.toIntArray()
+                        Config.colors = cs.toMutableList().apply { removeAt(position) }.toIntArray()
                         notifyItemRemoved(holder.adapterPosition)
                         FloatRingWindow.update()
                     }
@@ -70,7 +70,7 @@ class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorViewHolder>() {
     private fun pickColor(context: Context, pos: Int? = null) {
         pickColor(context, initColor = pos?.let { Config.colors.getOrNull(it) }) { c ->
             if (pos == null) {
-                Config.colors = Config.colors.asList().toMutableList().apply { add(c) }.toIntArray()
+                Config.colors = Config.colors.toMutableList().apply { add(c) }.toIntArray()
                 notifyDataSetChanged()
             } else {
                 Config.colors = Config.colors.also { it[pos] = c }

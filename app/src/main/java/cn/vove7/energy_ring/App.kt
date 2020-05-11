@@ -1,6 +1,7 @@
 package cn.vove7.energy_ring
 
 import android.app.Application
+import android.os.PowerManager
 import android.view.WindowManager
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.PowerEventReceiver
@@ -14,15 +15,20 @@ class App : Application() {
 
     companion object {
         lateinit var INS: App
+
+        val powerManager by lazy {
+            INS.getSystemService(PowerManager::class.java)!!
+        }
+        val windowsManager by lazy {
+            INS.getSystemService(WindowManager::class.java)!!
+        }
     }
 
     override fun onCreate() {
         INS = this
         super.onCreate()
 
-        val wm = getSystemService(WindowManager::class.java)
-        FloatRingWindow.start(wm!!)
-
+        FloatRingWindow.start()
         PowerEventReceiver.start()
         if (Config.autoHideRotate) {
             RotationListener.start()

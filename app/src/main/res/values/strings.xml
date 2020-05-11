@@ -11,7 +11,7 @@
     <string name="model_preset">预设机型</string>
     <string name="copy">复制</string>
     <string name="import_from_clipboard">从剪切板导入</string>
-    <string name="view_config">查看</string>
+    <string name="view_config">查看(保存)</string>
     <string name="text_import">导入</string>
     <string name="clipboard_content">剪切板内容</string>
     <string name="empty_in_clipboard">前切板无内容</string>
@@ -31,6 +31,13 @@
     <string name="ring_bg_color">背景色</string>
     <string name="rotate_speed_when_charging">转速[充电时]</string>
     <string name="rotate_speed_not_charging">转速[未充电]</string>
+    <string name="save_current_config">保存当前配置</string>
+    <string name="welcome_to_share_on_comment_area">欢迎分享至评论区</string>
+    <string name="display_only_this_model">仅显示本机型</string>
+    <string name="config_title">显示标题</string>
+    <string name="edit">编辑</string>
+    <string name="edit_local_config">本地配置编辑</string>
+    <string name="delete_selected">删除选中</string>
     <array name="way_of_donate">
         <item>支付宝</item>
         <item>微信</item>

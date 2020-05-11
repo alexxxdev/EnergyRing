@@ -1,6 +1,7 @@
 package cn.vove7.energy_ring.util
 
 import android.graphics.Color
+import cn.vove7.energy_ring.model.ShapeType
 import cn.vove7.smartkey.annotation.Config
 import cn.vove7.smartkey.key.smartKey
 import com.google.gson.annotations.SerializedName
@@ -13,6 +14,8 @@ import com.google.gson.annotations.SerializedName
  */
 @Config("app")
 object Config {
+
+    var energyType by smartKey(ShapeType.RING)
 
     var autoHideRotate by smartKey(true)
     var autoHideFullscreen by smartKey(true)
@@ -93,22 +96,29 @@ object Config {
     }
     val presetDevices by devicesWeakLazy
 
+    var localConfig by smartKey(arrayOf<Info>())
+
     //形状
     data class Info(
-            val name: String,
+            var name: String,
             val model: String,
             val posxf: Int,
             val posyf: Int,
-            @SerializedName("strokeWith", alternate = ["strokeWidth"])
+            @SerializedName("strokeWidth", alternate = ["strokeWith"])
             val strokeWidth: Float,
-            val sizef: Float
+            val sizef: Float,
+            val energyType: ShapeType = ShapeType.RING
     ) {
         companion object {
             fun fromConfig(model: String): Info {
                 return Info(
-                        model, model, posXf, posYf, strokeWidthF, sizef
+                        model, model, posXf, posYf, strokeWidthF, sizef, energyType
                 )
             }
+        }
+
+        fun save() {
+            localConfig = localConfig.toMutableList().apply { add(this@Info) }.toTypedArray()
         }
     }
 }

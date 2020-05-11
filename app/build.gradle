@@ -53,9 +53,12 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
 
     implementation 'com.google.code.gson:gson:2.8.6'
+
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    implementation 'com.afollestad.material-dialogs:input:3.3.0'
     implementation 'com.afollestad.material-dialogs:color:3.3.0'
     implementation 'com.afollestad.material-dialogs:lifecycle:3.3.0'
+    
     implementation 'com.github.Vove7.SmartKey:smartkey-android:6.1.3'
     testImplementation 'junit:junit:4.12'
 }

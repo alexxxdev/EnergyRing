@@ -8,6 +8,7 @@ import android.os.BatteryManager
 import android.util.Log
 import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
+import cn.vove7.energy_ring.util.isOnCharging
 
 /**
  * # PowerEventReceiver
@@ -34,7 +35,7 @@ object PowerEventReceiver : BroadcastReceiver() {
             addAction(Intent.ACTION_BATTERY_CHANGED)
         }
 
-    var isCharging: Boolean = false
+    var isCharging: Boolean = isOnCharging
 
     private var lastValue = 0
 

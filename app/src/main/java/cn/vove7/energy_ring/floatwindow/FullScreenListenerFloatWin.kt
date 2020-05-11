@@ -72,12 +72,12 @@ object FullScreenListenerFloatWin {
 
     var showing = false
 
-    fun start(wm: WindowManager) {
+    fun start() {
         if (showing) {
             return
         }
         showing = true
-        wm.addView(view, layoutParams)
+        App.windowsManager.addView(view, layoutParams)
     }
 
 }

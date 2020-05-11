@@ -1,7 +1,6 @@
 package cn.vove7.energy_ring.ui
 
 import android.content.*
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,7 +22,9 @@ import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import com.afollestad.materialdialogs.checkbox.checkBoxPrompt
 import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.list.listItems
+import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         bg_color_view.setBackgroundColor(Config.ringBgColor)
         bg_color_view.setTextColor(Config.ringBgColor.antiColor)
         bg_color_view.setOnClickListener {
-            pickColor(this,initColor = Config.ringBgColor) { c ->
+            pickColor(this, initColor = Config.ringBgColor) { c ->
                 bg_color_view.setBackgroundColor(c)
                 bg_color_view.setTextColor(c.antiColor)
                 Config.ringBgColor = c
@@ -90,14 +91,14 @@ class MainActivity : AppCompatActivity() {
         charging_rotateDuration_seek_bar.onStop { progress ->
             Config.chargingRotateDuration = (charging_rotateDuration_seek_bar.maxVal + 1 - progress) * 1000
             if (PowerEventReceiver.isCharging) {
-                FloatRingWindow.reloadAnimation(Config.chargingRotateDuration)
+                FloatRingWindow.reloadAnimation()
             }
         }
         default_rotateDuration_seek_bar.onStop { progress -> //[15,60]
             Config.defaultRotateDuration = (default_rotateDuration_seek_bar.maxVal - (progress - default_rotateDuration_seek_bar.minVal)) * 1000
             Log.d("Debug :", "listenSeekBar  ----> ${Config.defaultRotateDuration}")
             if (!PowerEventReceiver.isCharging) {
-                FloatRingWindow.reloadAnimation(Config.defaultRotateDuration)
+                FloatRingWindow.reloadAnimation()
             }
         }
         strokeWidth_seek_bar.onChange { progress, _ ->
@@ -154,10 +155,21 @@ class MainActivity : AppCompatActivity() {
         val msg = GsonBuilder().setPrettyPrinting().create().toJson(info)
         MaterialDialog(this).show {
             title(R.string.config_data)
-            message(text = "$msg\n欢迎分享至评论区")
+            message(text = "$msg\n" + getString(R.string.welcome_to_share_on_comment_area))
             positiveButton(R.string.copy) {
                 val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 cm.setPrimaryClip(ClipData.newPlainText("EnergyRing", msg))
+            }
+            negativeButton(R.string.save_current_config) {
+                MaterialDialog(this@MainActivity).show {
+                    title(R.string.config_title)
+                    input(waitForPositiveButton = true) { _, s ->
+                        info.name = s.toString()
+                        info.save()
+                    }
+                    positiveButton()
+                    negativeButton()
+                }
             }
         }
     }
@@ -168,22 +180,40 @@ class MainActivity : AppCompatActivity() {
 
     private fun pickPreSet(view: View) {
         MaterialDialog(this).show {
+            val allDs = Config.presetDevices.toMutableList().also {
+                it.addAll(Config.localConfig)
+            }
             title(R.string.model_preset)
             message(R.string.hint_preset_share)
-            var ds = Config.presetDevices.filter { it.model == Build.MODEL }
+            var ds = allDs.filter { it.model == Build.MODEL }
             if (ds.isEmpty()) {
-                ds = Config.presetDevices
+                ds = allDs
             }
             listItems(items = ds.map { it.name }) { _, i, _ ->
                 applyConfig(ds[i])
             }
-            checkBoxPrompt(text = "仅显示本机型", isCheckedDefault = ds.size != Config.presetDevices.size) { c ->
-                val dss = if (c) Config.presetDevices.filter { it.model == Build.MODEL }
-                else Config.presetDevices
+            checkBoxPrompt(R.string.display_only_this_model, isCheckedDefault = ds.size != allDs.size) { c ->
+                val dss = if (c) allDs.filter { it.model == Build.MODEL }
+                else allDs
                 listItems(items = dss.map { it.name }) { _, i, _ ->
                     applyConfig(dss[i])
                 }
             }
+            positiveButton(R.string.edit) { editLocalConfig() }
+        }
+    }
+
+    private fun editLocalConfig() {
+        MaterialDialog(this).show {
+            title(R.string.edit_local_config)
+            listItemsMultiChoice(items = Config.localConfig.map { it.name }, waitForPositiveButton = true) { _, indices, _ ->
+                val cs = Config.localConfig
+                val list = cs.toMutableList()
+                list.removeAll(indices.map { cs[it] })
+                Config.localConfig = list.toTypedArray()
+            }
+            positiveButton(R.string.delete_selected)
+            negativeButton()
         }
     }
 
@@ -193,6 +223,10 @@ class MainActivity : AppCompatActivity() {
         Config.sizef = info.sizef
         Config.strokeWidthF = info.strokeWidth
         refreshData()
+        if (info.energyType != Config.energyType) {
+            Config.energyType = info.energyType
+            FloatRingWindow.onChangeShapeType()
+        }
     }
 
     private fun importFromClip(view: View) {
