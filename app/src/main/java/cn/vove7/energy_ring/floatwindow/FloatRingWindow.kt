@@ -114,7 +114,11 @@ object FloatRingWindow {
                     reloadAnimation(Config.defaultRotateDuration)
                 }
             } else {
-                rotateAnimator.resume()
+                if (!rotateAnimator.isPaused) {
+                    rotateAnimator.start()
+                } else {
+                    rotateAnimator.resume()
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -143,13 +147,13 @@ object FloatRingWindow {
 
 
     fun reloadAnimation(speedDuration: Int = 5000) {
-        if (!isShowing) {
-            return
-        }
         if (::rotateAnimator.isInitialized) {
             rotateAnimator.cancel()
         }
         rotateAnimator = buildAnimator(ringView.rotation, speedDuration)
+        if (!isShowing) {
+            return
+        }
         rotateAnimator.start()
     }
 
