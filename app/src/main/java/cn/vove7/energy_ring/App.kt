@@ -1,6 +1,8 @@
 package cn.vove7.energy_ring
 
 import android.app.Application
+import android.content.Intent
+import android.os.Build
 import android.os.PowerManager
 import android.view.WindowManager
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
@@ -34,5 +36,11 @@ class App : Application() {
             RotationListener.start()
         }
 
+        val foreService = Intent(this, ForegroundService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(foreService)
+        } else {
+            startService(foreService)
+        }
     }
 }
