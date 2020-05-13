@@ -141,13 +141,6 @@ val batteryLevel: Int
         return level * 1000 / maxLevel
     }
 
-fun <T : CoordinatorLayout.Behavior<*>> View.findBehavior(): T = layoutParams.run {
-    if (this !is CoordinatorLayout.LayoutParams) throw IllegalArgumentException("View's layout params should be CoordinatorLayout.LayoutParams")
-
-    (layoutParams as CoordinatorLayout.LayoutParams).behavior as? T
-        ?: throw IllegalArgumentException("Layout's behavior is not current behavior")
-}
-
 val aev = ArgbEvaluatorCompat()
 
 fun getColorByRange(progress: Float, colors: IntArray): Int {
@@ -155,7 +148,7 @@ fun getColorByRange(progress: Float, colors: IntArray): Int {
         return colors[0]
     }
     val perP = 1f / (colors.size - 1)
-    (colors.indices).forEach {
+    (0 until colors.size - 1).forEach {
         if (progress >= it * perP && progress < perP * (it + 1)) {
             return aev.evaluate((progress - it * perP) / perP, colors[it], colors[it + 1])
         }

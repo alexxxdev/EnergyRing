@@ -1,6 +1,7 @@
 package cn.vove7.energy_ring.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -113,8 +114,9 @@ class DoubleRingStyleFragment : Fragment() {
                 FloatRingWindow.reloadAnimation()
             }
         }
-        default_rotateDuration_seek_bar?.onStop { progress -> //[15,60]
-            Config.defaultRotateDuration = (default_rotateDuration_seek_bar.maxVal - (progress - default_rotateDuration_seek_bar.minVal)) * 1000
+        default_rotateDuration_seek_bar?.onStop { progress -> //[60,180]
+            Config.defaultRotateDuration =  (default_rotateDuration_seek_bar.maxVal - (progress - default_rotateDuration_seek_bar.minVal)) * 1000
+            Log.d("Debug :", "listenSeekBar  ---->$progress ${Config.defaultRotateDuration}")
             if (!PowerEventReceiver.isCharging) {
                 FloatRingWindow.reloadAnimation()
             }

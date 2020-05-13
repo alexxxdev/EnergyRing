@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.SeekBar
+import androidx.annotation.RequiresApi
 import cn.vove7.energy_ring.R
 import kotlinx.android.synthetic.main.accurate_seek_bar.view.*
 
@@ -24,26 +25,34 @@ class AccurateSeekBar @JvmOverloads constructor(
             field = value
             title_view.text = value
         }
+
+    val aboveO = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+
     var minVal: Int = 0
+        @RequiresApi(Build.VERSION_CODES.O)
         set(value) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                field = value
+            field = value
+            if (aboveO) {
                 seek_bar_view.min = value
             } else {
-                maxVal -= value
+                maxVal = maxVal
             }
         }
 
     var maxVal: Int = 100
         set(value) {
             field = value
-            seek_bar_view.max = value
+            seek_bar_view.max = if (aboveO) {
+                value
+            } else {
+                value - minVal
+            }
         }
 
     var progress: Int = 0
         set(value) {
             field = value
-            seek_bar_view.progress = value
+            seek_bar_view.progress = if (aboveO) value else value - minVal
         }
 
     init {
@@ -55,25 +64,29 @@ class AccurateSeekBar @JvmOverloads constructor(
 
         ats.recycle()
         plus_view.setOnClickListener {
-            val p = seek_bar_view.progress + 1
+            var p = seek_bar_view.progress + 1
             seek_bar_view.progress = p
+            p = if (aboveO) p else p + minVal
             onChangeAction?.invoke(p, true)
             onStopAction?.invoke(p)
         }
         minus_view.setOnClickListener {
-            val p = seek_bar_view.progress - 1
+            var p = seek_bar_view.progress - 1
             seek_bar_view.progress = p
+            p = if (aboveO) p else p + minVal
             onChangeAction?.invoke(p, true)
             onStopAction?.invoke(p)
         }
         seek_bar_view.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                onChangeAction?.invoke(progress, fromUser)
+                val p = if (aboveO) progress else progress + minVal
+                onChangeAction?.invoke(p, fromUser)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                onStopAction?.invoke(seekBar.progress)
+                val p = if (aboveO) seekBar.progress else seekBar.progress + minVal
+                onStopAction?.invoke(p)
             }
         })
     }
