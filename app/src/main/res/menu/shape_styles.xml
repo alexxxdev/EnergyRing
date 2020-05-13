@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_type_ring"
+        android:icon="@color/colorAccent"
+        android:title="@string/type_ring" />
+    <item
+        android:id="@+id/menu_type_double_ring"
+        android:icon="@color/colorPrimaryDark"
+        android:title="@string/type_double_ring" />
+    <item
+        android:id="@+id/menu_type_pill"
+        android:icon="@color/colorPrimary"
+        android:title="@string/type_pill" />
+</menu>

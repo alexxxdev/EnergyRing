@@ -9,11 +9,13 @@ import android.os.BatteryManager
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
+import android.view.View
 import android.view.WindowManager
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import cn.vove7.energy_ring.App
-import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.colorChooser
+import com.google.android.material.animation.ArgbEvaluatorCompat
 
 /**
  * # utils
@@ -138,3 +140,25 @@ val batteryLevel: Int
         val maxLevel = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100) //最大
         return level * 1000 / maxLevel
     }
+
+fun <T : CoordinatorLayout.Behavior<*>> View.findBehavior(): T = layoutParams.run {
+    if (this !is CoordinatorLayout.LayoutParams) throw IllegalArgumentException("View's layout params should be CoordinatorLayout.LayoutParams")
+
+    (layoutParams as CoordinatorLayout.LayoutParams).behavior as? T
+        ?: throw IllegalArgumentException("Layout's behavior is not current behavior")
+}
+
+val aev = ArgbEvaluatorCompat()
+
+fun getColorByRange(progress: Float, colors: IntArray): Int {
+    if (progress < 0) {
+        return colors[0]
+    }
+    val perP = 1f / (colors.size - 1)
+    (colors.indices).forEach {
+        if (progress >= it * perP && progress < perP * (it + 1)) {
+            return aev.evaluate((progress - it * perP) / perP, colors[it], colors[it + 1])
+        }
+    }
+    return colors.last()
+}

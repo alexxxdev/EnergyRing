@@ -1,6 +1,5 @@
 package cn.vove7.energy_ring.util
 
-import android.graphics.Color
 import cn.vove7.energy_ring.model.ShapeType
 import cn.vove7.smartkey.annotation.Config
 import cn.vove7.smartkey.key.smartKey
@@ -17,6 +16,8 @@ object Config {
 
     var energyType by smartKey(ShapeType.RING)
 
+    val autoRotateDisCharging get() = defaultRotateDuration != 180000
+
     var autoHideRotate by smartKey(true)
     var autoHideFullscreen by smartKey(true)
 
@@ -24,18 +25,22 @@ object Config {
     var chargingRotateDuration by smartKey(3000)
 
     //默认旋转速度
-    var defaultRotateDuration by smartKey(600000)
+    var defaultRotateDuration by smartKey(1200000)
 
-    var ringBgColor by smartKey(Color.TRANSPARENT)
+    var ringBgColor by smartKey("#a0fffde7".asColor)
+
+    //第二圆环功能
+    var secondaryRingFeature by smartKey(0)
+
+    //电池图标位置
+    var doubleRingChargingIndex by smartKey(0)
 
     //粗细百分比
     var strokeWidthF by smartKey(12f)
 
     var colors by smartKey(intArrayOf(
-            Color.parseColor("#fd3322"),
-            Color.parseColor("#0085f4"),
-            Color.parseColor("#fdb701"),
-            Color.parseColor("#fd3322")
+            "#ff00e676".asColor,
+            "#ff64dd17".asColor
     ))
 
     //2千分比值
@@ -46,6 +51,10 @@ object Config {
     var posYf by smartKey(22)
     val posY get() = ((posYf / 2000f) * screenHeight).toInt()
 
+    var spacingWidthF by smartKey(10)
+    val spacingWidth get() = ((spacingWidthF / 2000f) * screenWidth).toInt()
+
+    //ring size pill 高度
     var sizef by smartKey(0.06736f)
 
     var size: Int
@@ -99,6 +108,7 @@ object Config {
     var localConfig by smartKey(arrayOf<Info>())
 
     //形状
+    @Suppress("ArrayInDataClass")
     data class Info(
             var name: String,
             val model: String,
@@ -107,12 +117,19 @@ object Config {
             @SerializedName("strokeWidth", alternate = ["strokeWith"])
             val strokeWidth: Float,
             val sizef: Float,
-            val energyType: ShapeType = ShapeType.RING
+            val energyType: ShapeType = ShapeType.RING,
+            val spacingWidth: Int = -1,
+            val bgColor: Int? = null,
+            val doubleRingChargingIndex: Int = 0,
+            val secondaryRingFeature: Int? = 0,
+            val colors: IntArray? = null
     ) {
         companion object {
             fun fromConfig(model: String): Info {
                 return Info(
-                        model, model, posXf, posYf, strokeWidthF, sizef, energyType
+                        model, model, posXf, posYf, strokeWidthF, sizef, energyType,
+                        spacingWidthF, ringBgColor, doubleRingChargingIndex, secondaryRingFeature,
+                        colors
                 )
             }
         }

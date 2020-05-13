@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_model_preset"
+        android:icon="@drawable/ic_developer_mode"
+        android:title="@string/model_preset"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/rotate_auto_hide"
+        android:checkable="true"
+        android:title="@string/auto_hide_on_rotate" />
+
+    <item
+        android:id="@+id/fullscreen_auto_hide"
+        android:checkable="true"
+        android:title="@string/auto_hide_on_fullscreen" />
+    <item
+        android:id="@+id/menu_about"
+        android:icon="@drawable/ic_info"
+        android:title="@string/about"
+        app:showAsAction="ifRoom" />
+</menu>

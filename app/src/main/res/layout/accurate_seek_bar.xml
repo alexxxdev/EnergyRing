@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1dp"
+    android:layout_margin="2dp"
     app:cardCornerRadius="10dp">
 
     <LinearLayout
@@ -37,7 +37,7 @@
                 android:text="-"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
 
-            <SeekBar
+            <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/seek_bar_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

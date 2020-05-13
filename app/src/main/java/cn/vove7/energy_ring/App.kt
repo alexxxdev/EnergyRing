@@ -33,5 +33,6 @@ class App : Application() {
         if (Config.autoHideRotate) {
             RotationListener.start()
         }
+
     }
 }

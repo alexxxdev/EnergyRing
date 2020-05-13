@@ -27,10 +27,11 @@
     <string name="alipay_is_not_installed">未安装支付宝</string>
     <string name="auto_hide_on_rotate">[屏幕方向切换]自动隐藏</string>
     <string name="auto_hide_on_fullscreen">[全屏]自动隐藏</string>
-    <string name="color_setting">颜色设置(长按删除)</string>
+    <string name="multi_color_setting">颜色设置(长按删除)</string>
+    <string name="single_color_setting">颜色设置</string>
     <string name="ring_bg_color">背景色</string>
     <string name="rotate_speed_when_charging">转速[充电时]</string>
-    <string name="rotate_speed_not_charging">转速[未充电]</string>
+    <string name="rotate_speed_not_charging">转速[未充电, 最左边不旋转]</string>
     <string name="save_current_config">保存当前配置</string>
     <string name="welcome_to_share_on_comment_area">欢迎分享至评论区</string>
     <string name="display_only_this_model">仅显示本机型</string>
@@ -38,8 +39,25 @@
     <string name="edit">编辑</string>
     <string name="edit_local_config">本地配置编辑</string>
     <string name="delete_selected">删除选中</string>
+    <string name="type_ring">圆形</string>
+    <string name="type_pill">药丸</string>
+    <string name="type_double_ring">双孔</string>
+    <string name="config_import_and_save">导入并保存</string>
+    <string name="spacing">间距</string>
+    <string name="main_color">主色</string>
+    <string name="height">高度</string>
+    <string name="double_ring_function">圆环功能</string>
+    <string name="battery_direction_format">电池方向：%s</string>
+    <string name="feature_of_secondary_ring">第二圆环功能： %s</string>
     <array name="way_of_donate">
         <item>支付宝</item>
         <item>微信</item>
+    </array>
+    <array name="ring_features">
+        <item>内存使用情况</item>
+    </array>
+    <array name="double_ring_battery_direction">
+        <item>左边</item>
+        <item>右边</item>
     </array>
 </resources>

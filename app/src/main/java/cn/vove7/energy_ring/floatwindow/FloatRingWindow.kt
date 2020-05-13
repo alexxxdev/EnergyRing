@@ -16,9 +16,9 @@ import android.widget.Toast
 import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.energystyle.DoubleRingStyle
-import cn.vove7.energy_ring.energystyle.EnergyStyle
 import cn.vove7.energy_ring.energystyle.PillStyle
 import cn.vove7.energy_ring.energystyle.RingStyle
+import cn.vove7.energy_ring.listener.RotationListener
 import cn.vove7.energy_ring.model.ShapeType
 import cn.vove7.energy_ring.util.Config
 import cn.vove7.energy_ring.util.batteryLevel
@@ -43,7 +43,7 @@ object FloatRingWindow {
             ShapeType.RING -> RingStyle()
             ShapeType.DOUBLE_RING -> DoubleRingStyle()
             ShapeType.PILL -> PillStyle()
-        } as EnergyStyle
+        }
     }
     private val displayEnergyStyle by displayEnergyStyleDelegate
 
@@ -76,7 +76,7 @@ object FloatRingWindow {
     var isShowing = false
     private val layoutParams: WindowManager.LayoutParams
         get() = WindowManager.LayoutParams(
-                Config.size, Config.size,
+                -2, -2,
                 Config.posX, Config.posY,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -94,18 +94,20 @@ object FloatRingWindow {
 
     private val bodyView by lazy {
         FrameLayout(App.INS).apply {
-            addView(displayEnergyStyle.displayView)
+            addView(displayEnergyStyle.displayView, -2, -2)
         }
     }
 
-    fun onChangeShapeType() {
+    fun onShapeTypeChanged() {
         displayEnergyStyle.onRemove()
         displayEnergyStyleDelegate.clearWeakValue()
         bodyView.apply {
             removeAllViews()
-            addView(displayEnergyStyle.displayView)
+            addView(displayEnergyStyle.displayView, -2, -2)
         }
-        showInternal()
+        displayEnergyStyle.update(batteryLevel)
+        displayEnergyStyle.reloadAnimation()
+        show()
     }
 
     private fun showInternal() {
@@ -117,11 +119,8 @@ object FloatRingWindow {
             if (bodyView.tag != true) {
                 wm.addView(bodyView, layoutParams)
                 bodyView.tag = true
-
-                reloadAnimation()
-            } else {
-                displayEnergyStyle.resumeAnimator()
             }
+            reloadAnimation()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -132,6 +131,7 @@ object FloatRingWindow {
             return
         }
         displayEnergyStyle.update(p)
+        bodyView.requestLayout()
         wm.updateViewLayout(bodyView, layoutParams)
     }
 
@@ -157,8 +157,17 @@ object FloatRingWindow {
         displayEnergyStyle.onHide()
     }
 
-    fun show() {
+    fun canShow(): Boolean {
         if (!hasPermission || isShowing) {
+            return false
+        }
+        return (Config.autoHideRotate && RotationListener.canShow) &&
+                (Config.autoHideFullscreen && !FullScreenListenerFloatWin.isFullScreen)
+
+    }
+
+    fun show() {
+        if (!canShow()) {
             return
         }
         showInternal()

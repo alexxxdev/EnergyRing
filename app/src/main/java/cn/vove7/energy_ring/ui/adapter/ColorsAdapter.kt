@@ -1,7 +1,9 @@
 package cn.vove7.energy_ring.ui.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -25,13 +27,18 @@ class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorViewHolder {
         val colorView = TextView(parent.context)
         colorView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
+        colorView.setTextColor(Color.WHITE)
+        colorView.setPadding(20, 20, 20, 20)
+        colorView.gravity = Gravity.CENTER
         colorView.layoutParams = FrameLayout.LayoutParams(-2, -2).also {
             it.setMargins(10, 10, 10, 10)
         }
         return ColorViewHolder(colorView)
     }
 
-    private val hasPlus get() = Config.colors.size < 6
+    private val MAX_COLOR_COUNT = 10
+
+    private val hasPlus get() = Config.colors.size < MAX_COLOR_COUNT
 
     override fun getItemCount(): Int = Config.colors.size + if (hasPlus) 1 else 0
 
@@ -45,7 +52,7 @@ class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorViewHolder>() {
                 text = ""
                 background = ContextCompat.getDrawable(context, R.drawable.ic_add_circle)
             } else {
-                text = "         \n          "
+                text = getRangeByPos(position).let { "${it.first}-${it.second}" }
                 setBackgroundColor(Config.colors[position])
                 setOnClickListener {
                     pickColor(context, holder.adapterPosition)
@@ -58,13 +65,20 @@ class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorViewHolder>() {
                     }
                     kotlin.runCatching {
                         Config.colors = cs.toMutableList().apply { removeAt(position) }.toIntArray()
-                        notifyItemRemoved(holder.adapterPosition)
+                        notifyDataSetChanged()
                         FloatRingWindow.update()
                     }
                     true
                 }
             }
         }
+    }
+
+    private fun getRangeByPos(pos: Int): Pair<Int, Int> {
+        val len = Config.colors.size
+        val perf = 100f / len
+
+        return (perf * pos).toInt() to (perf * (pos + 1)).toInt()
     }
 
     private fun pickColor(context: Context, pos: Int? = null) {
@@ -74,7 +88,7 @@ class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorViewHolder>() {
                 notifyDataSetChanged()
             } else {
                 Config.colors = Config.colors.also { it[pos] = c }
-                notifyItemChanged(pos)
+                notifyDataSetChanged()
             }
             FloatRingWindow.update()
         }

@@ -1,9 +1,13 @@
-package cn.vove7.energy_ring.view
+package cn.vove7.energy_ring.ui.view
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import cn.vove7.energy_ring.BuildConfig
 import kotlin.math.min
 
@@ -23,22 +27,11 @@ class RingView @JvmOverloads constructor(
     val progressf get() = progress / accuracy
 
     var progress: Int = accuracy.toInt() / 2
-        set(value) {
-            field = value
-            invalidate()
-        }
 
+    var mainColor = Color.GREEN
     var bgColor = if (BuildConfig.DEBUG) Color.argb(10, 10, 10, 10) else Color.TRANSPARENT
-        set(value) {
-            field = value
-            bgShader = SweepGradient(0f, 0f, intArrayOf(value, value), null)
-        }
 
     var strokeWidthF = 8f
-        set(value) {
-            field = value
-            invalidate()
-        }
     private val paint by lazy {
         Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.BLUE
@@ -46,26 +39,6 @@ class RingView @JvmOverloads constructor(
     }
 
     private val rectF = RectF()
-
-    var doughnutColors = intArrayOf(
-            Color.RED,
-            Color.GREEN,
-            Color.BLUE,
-            Color.RED
-    )
-        set(value) {
-            field = value.let {
-                when (it.size) {
-                    1 -> intArrayOf(it[0], it[0])
-                    0 -> intArrayOf(Color.RED, Color.GREEN, Color.BLUE, Color.RED)
-                    else -> it
-                }
-            }
-            shader = SweepGradient(0f, 0f, doughnutColors, null)
-        }
-
-    private var shader = SweepGradient(0f, 0f, doughnutColors, null)
-    private var bgShader = SweepGradient(0f, 0f, intArrayOf(bgColor, bgColor), null)
 
     private fun initPaint() {
         paint.reset()
@@ -85,7 +58,7 @@ class RingView @JvmOverloads constructor(
         rectF.set(-r, -r, r, r)
 
         //背景
-        paint.shader = bgShader
+        paint.color = bgColor
         paint.strokeWidth = strokeWidth
         paint.style = Paint.Style.STROKE
         canvas.drawArc(rectF, 0f, 360f, true, paint)
@@ -93,8 +66,19 @@ class RingView @JvmOverloads constructor(
         //圆环
         paint.strokeWidth = strokeWidth
         paint.style = Paint.Style.STROKE
-        paint.shader = shader
+        paint.color = mainColor
         canvas.drawArc(rectF, 0f, 360f * progressf, false, paint)
-
     }
+
+    fun reSize(size: Int) {
+        val lp = layoutParams ?: ViewGroup.LayoutParams(0, 0)
+        if (lp.height == size) {
+            return
+        }
+        layoutParams = lp.also {
+            it.width = size
+            it.height = size
+        }
+    }
+
 }

@@ -5,18 +5,20 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
-import android.util.Log
+import android.view.MenuItem
 import android.view.View
+import android.widget.ActionMenuView
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
-import cn.vove7.energy_ring.listener.PowerEventReceiver
 import cn.vove7.energy_ring.listener.RotationListener
-import cn.vove7.energy_ring.ui.adapter.ColorsAdapter
-import cn.vove7.energy_ring.util.*
+import cn.vove7.energy_ring.model.ShapeType
+import cn.vove7.energy_ring.ui.adapter.StylePagerAdapter
+import cn.vove7.energy_ring.util.Config
+import cn.vove7.energy_ring.util.DonateHelper
+import cn.vove7.energy_ring.util.isDarkMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
@@ -30,93 +32,87 @@ import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.ceil
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener {
+
+    private val pageAdapter by lazy {
+        StylePagerAdapter(supportFragmentManager)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!isDarkMode) {
             window.decorView.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
+                        0x00000010
         }
+
+        val attrs = intArrayOf(
+                android.R.attr.selectableItemBackgroundBorderless,
+                android.R.attr.selectableItemBackground
+        )
+
+        val ta = obtainStyledAttributes(attrs)
+        val id = ta.getResourceId(0,0)
+        val d = ta.getDrawable(0)
+
         setContentView(R.layout.activity_main)
 
-        refreshData()
-        Handler().postDelayed(::listenSeekBar, 500)
+        style_view_pager.adapter = pageAdapter
 
-        about_view.setOnClickListener(::showAbout)
-        pick_preset_view.setOnClickListener(::pickPreSet)
         view_info_view.setOnClickListener(::outConfig)
         import_view.setOnClickListener(::importFromClip)
+        initRadioStylesView()
 
-        color_list.adapter = ColorsAdapter()
-        bg_color_view.setBackgroundColor(Config.ringBgColor)
-        bg_color_view.setTextColor(Config.ringBgColor.antiColor)
-        bg_color_view.setOnClickListener {
-            pickColor(this, initColor = Config.ringBgColor) { c ->
-                bg_color_view.setBackgroundColor(c)
-                bg_color_view.setTextColor(c.antiColor)
-                Config.ringBgColor = c
-                FloatRingWindow.update()
-            }
-        }
+        styleButtons[Config.energyType.ordinal].callOnClick()
+
+        menuInflater.inflate(R.menu.main, menu_view.menu)
+        menu_view.setOnMenuItemClickListener(this)
+        menu_view.menu.getItem(1).isChecked = Config.autoHideRotate
+        menu_view.menu.getItem(2).isChecked = Config.autoHideFullscreen
     }
 
-    private fun refreshData() {
-        strokeWidth_seek_bar.progress = Config.strokeWidthF.toInt()
-        posx_seek_bar.progress = Config.posXf
-        posy_seek_bar.progress = Config.posYf
-        size_seek_bar.progress = Config.size
-        charging_rotateDuration_seek_bar.progress = (charging_rotateDuration_seek_bar.maxVal + 1 - Config.chargingRotateDuration / 1000)
-        default_rotateDuration_seek_bar.progress = (default_rotateDuration_seek_bar.maxVal + default_rotateDuration_seek_bar.minVal -
-                (Config.defaultRotateDuration) / 1000)
-
+    private fun initRadioStylesView() {
+        button_style_ring.setOnClickListener(::onStyleButtonClick)
+        button_style_double_ring.setOnClickListener(::onStyleButtonClick)
+        button_style_pill.setOnClickListener(::onStyleButtonClick)
     }
 
-    private fun listenSeekBar() {
-        fullscreen_auto_hide.isChecked = Config.autoHideFullscreen
-        rotate_auto_hide.isChecked = Config.autoHideRotate
+    private val styleButtons by lazy {
+        arrayOf(button_style_ring, button_style_double_ring, button_style_pill)
+    }
 
-        fullscreen_auto_hide.setOnCheckedChangeListener { _, isChecked ->
-            Config.autoHideFullscreen = isChecked
+    private fun onStyleButtonClick(v: View) {
+        val i = styleButtons.indexOf(v)
+        styleButtons.forEach { it.isSelected = (it == v) }
+        val newStyle = ShapeType.values()[i]
+        if (Config.energyType != newStyle) {
+            Config.energyType = newStyle
+            FloatRingWindow.onShapeTypeChanged()
         }
-        rotate_auto_hide.setOnCheckedChangeListener { _, isChecked ->
-            Config.autoHideRotate = isChecked
-            if (isChecked && !RotationListener.enabled) {
-                RotationListener.start()
-            } else {
-                RotationListener.stop()
+        style_view_pager.currentItem = i
+    }
+
+
+    override fun onMenuItemClick(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_about -> showAbout()
+            R.id.menu_model_preset -> pickPreSet()
+            R.id.fullscreen_auto_hide -> {
+                Config.autoHideFullscreen = !Config.autoHideFullscreen
+                item.isChecked = Config.autoHideFullscreen
+            }
+            R.id.rotate_auto_hide -> {
+                Config.autoHideRotate = !Config.autoHideRotate
+                item.isChecked = Config.autoHideRotate
+                if (item.isChecked && !RotationListener.enabled) {
+                    RotationListener.start()
+                } else {
+                    RotationListener.stop()
+                }
             }
         }
-        charging_rotateDuration_seek_bar.onStop { progress ->
-            Config.chargingRotateDuration = (charging_rotateDuration_seek_bar.maxVal + 1 - progress) * 1000
-            if (PowerEventReceiver.isCharging) {
-                FloatRingWindow.reloadAnimation()
-            }
-        }
-        default_rotateDuration_seek_bar.onStop { progress -> //[15,60]
-            Config.defaultRotateDuration = (default_rotateDuration_seek_bar.maxVal - (progress - default_rotateDuration_seek_bar.minVal)) * 1000
-            Log.d("Debug :", "listenSeekBar  ----> ${Config.defaultRotateDuration}")
-            if (!PowerEventReceiver.isCharging) {
-                FloatRingWindow.reloadAnimation()
-            }
-        }
-        strokeWidth_seek_bar.onChange { progress, _ ->
-            Config.strokeWidthF = progress.toFloat()
-            FloatRingWindow.update()
-        }
-        posx_seek_bar.onChange { progress, _ ->
-            Config.posXf = progress
-            FloatRingWindow.update()
-        }
-        posy_seek_bar.onChange { progress, _ ->
-            Config.posYf = progress
-            FloatRingWindow.update()
-        }
-        size_seek_bar.onChange { progress, _ ->
-            Config.size = progress
-            FloatRingWindow.update()
-        }
+        return true
     }
 
     private var firstIn = true
@@ -137,7 +133,7 @@ class MainActivity : AppCompatActivity() {
                         positiveButton(R.string.i_know) {
                             dismiss()
                             Config.tipOfRecent = false
-                            showAbout(null)
+                            showAbout()
                         }
                     }
 
@@ -161,16 +157,20 @@ class MainActivity : AppCompatActivity() {
                 cm.setPrimaryClip(ClipData.newPlainText("EnergyRing", msg))
             }
             negativeButton(R.string.save_current_config) {
-                MaterialDialog(this@MainActivity).show {
-                    title(R.string.config_title)
-                    input(waitForPositiveButton = true) { _, s ->
-                        info.name = s.toString()
-                        info.save()
-                    }
-                    positiveButton()
-                    negativeButton()
-                }
+                saveConfig(info)
             }
+        }
+    }
+
+    private fun saveConfig(info: Config.Info, name: CharSequence? = null) {
+        MaterialDialog(this@MainActivity).show {
+            title(R.string.config_title)
+            input(waitForPositiveButton = true, prefill = name) { _, s ->
+                info.name = s.toString()
+                info.save()
+            }
+            positiveButton()
+            negativeButton()
         }
     }
 
@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity() {
         finishAndRemoveTask()
     }
 
-    private fun pickPreSet(view: View) {
+    private fun pickPreSet() {
         MaterialDialog(this).show {
             val allDs = Config.presetDevices.toMutableList().also {
                 it.addAll(Config.localConfig)
@@ -223,11 +223,40 @@ class MainActivity : AppCompatActivity() {
         Config.posYf = info.posyf
         Config.sizef = info.sizef
         Config.strokeWidthF = info.strokeWidth
-        refreshData()
+
+        info.colors?.also {
+            if (it.isNotEmpty()) {
+                Config.colors = it
+            }
+        }
+
+        info.bgColor?.also {
+            Config.ringBgColor = it
+        }
+
+        when (info.energyType) {
+            ShapeType.DOUBLE_RING -> {
+                Config.spacingWidthF = info.spacingWidth
+                info.secondaryRingFeature?.also {
+                    Config.secondaryRingFeature = it
+                }
+            }
+            ShapeType.PILL -> {
+                Config.spacingWidthF = info.spacingWidth
+            }
+        }
         if (info.energyType != Config.energyType) {
             Config.energyType = info.energyType
-            FloatRingWindow.onChangeShapeType()
+            FloatRingWindow.onShapeTypeChanged()
+        } else {
+            FloatRingWindow.update()
         }
+        refreshData()
+    }
+
+    private fun refreshData() {
+        pageAdapter.getItem(style_view_pager.currentItem).onResume()
+        styleButtons[Config.energyType.ordinal].callOnClick()
     }
 
     private fun importFromClip(view: View) {
@@ -242,24 +271,28 @@ class MainActivity : AppCompatActivity() {
             title(R.string.clipboard_content)
             message(text = content)
             positiveButton(R.string.text_import) {
-                kotlin.runCatching {
-                    Gson().fromJson(content.toString(), Config.Info::class.java)
-                }.onSuccess {
-                    it.apply {
-                        Config.posXf = posxf
-                        Config.posYf = posyf
-                        Config.sizef = sizef
-                        Config.strokeWidthF = strokeWidth
-                        refreshData()
-                    }
-                }.onFailure {
-                    Toast.makeText(this@MainActivity, it.message, Toast.LENGTH_SHORT).show()
-                }
+                importConfig(content.toString(), false)
+            }
+            negativeButton(R.string.config_import_and_save) {
+                importConfig(content.toString(), true)
             }
         }
     }
 
-    private fun showAbout(view: View?) {
+    private fun importConfig(content: String, save: Boolean) {
+        kotlin.runCatching {
+            Gson().fromJson(content, Config.Info::class.java)
+        }.onSuccess {
+            applyConfig(it)
+            if (save) {
+                saveConfig(it, it.name)
+            }
+        }.onFailure {
+            Toast.makeText(this@MainActivity, it.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showAbout() {
         MaterialDialog(this).show {
             title(R.string.about)
             message(
@@ -301,7 +334,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     private fun showWxQr() {

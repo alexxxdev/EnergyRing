@@ -1,4 +1,4 @@
-package cn.vove7.energy_ring.view
+package cn.vove7.energy_ring.ui.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -50,10 +50,16 @@ class AccurateSeekBar @JvmOverloads constructor(
 
         ats.recycle()
         plus_view.setOnClickListener {
-            seek_bar_view.progress = seek_bar_view.progress + 1
+            val p = seek_bar_view.progress + 1
+            seek_bar_view.progress = p
+            onChangeAction?.invoke(p, true)
+            onStopAction?.invoke(p)
         }
         minus_view.setOnClickListener {
-            seek_bar_view.progress = seek_bar_view.progress - 1
+            val p = seek_bar_view.progress - 1
+            seek_bar_view.progress = p
+            onChangeAction?.invoke(p, true)
+            onStopAction?.invoke(p)
         }
         seek_bar_view.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -68,7 +74,7 @@ class AccurateSeekBar @JvmOverloads constructor(
     }
 
     fun onChange(lis: (progress: Int, fromUser: Boolean) -> Unit) {
-        seek_bar_view.onChange(lis)
+        onChangeAction = lis
     }
 
     private var onStopAction: ((progress: Int) -> Unit)? = null
@@ -79,15 +85,4 @@ class AccurateSeekBar @JvmOverloads constructor(
         onStopAction = stopAction
     }
 
-    private fun SeekBar.onChange(lis: (progress: Int, fromUser: Boolean) -> Unit) {
-        setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                lis(progress, fromUser)
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
-
-    }
 }

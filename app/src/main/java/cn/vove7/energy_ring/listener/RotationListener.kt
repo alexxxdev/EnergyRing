@@ -29,7 +29,11 @@ object RotationListener : BroadcastReceiver() {
 
     fun stop() {
         enabled = false
-        App.INS.unregisterReceiver(this)
+        try {
+            App.INS.unregisterReceiver(this)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     var rotation = 0

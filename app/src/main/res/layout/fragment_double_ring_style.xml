@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="50dp">
+
+        <cn.vove7.energy_ring.ui.view.AccurateSeekBar
+            android:id="@+id/strokeWidth_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:max="100"
+            app:min="1"
+            app:title="@string/ring_width" />
+
+        <cn.vove7.energy_ring.ui.view.AccurateSeekBar
+            android:id="@+id/posx_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:max="2000"
+            app:min="0"
+            app:title="@string/position_of_horizontal" />
+
+        <cn.vove7.energy_ring.ui.view.AccurateSeekBar
+            android:id="@+id/posy_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:max="2000"
+            app:min="0"
+            app:title="@string/position_of_vertical" />
+
+        <cn.vove7.energy_ring.ui.view.AccurateSeekBar
+            android:id="@+id/size_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:max="200"
+            app:min="20"
+            app:title="@string/size" />
+
+        <cn.vove7.energy_ring.ui.view.AccurateSeekBar
+            android:id="@+id/spacing_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:max="1000"
+            app:min="0"
+            app:title="@string/spacing" />
+
+        <cn.vove7.energy_ring.ui.view.AccurateSeekBar
+            android:id="@+id/default_rotateDuration_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:max="180"
+            app:min="60"
+            app:title="@string/rotate_speed_not_charging" />
+
+        <cn.vove7.energy_ring.ui.view.AccurateSeekBar
+            android:id="@+id/charging_rotateDuration_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:max="8"
+            app:min="1"
+            app:title="@string/rotate_speed_when_charging" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="10dp"
+            app:contentPadding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/multi_color_setting"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="14sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/color_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <TextView
+                    android:id="@+id/bg_color_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/ring_bg_color" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp"
+            app:cardCornerRadius="10dp"
+            app:contentPadding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/double_ring_function"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/pick_battery_direction_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/battery_direction_format" />
+
+                <TextView
+                    android:id="@+id/pick_secondary_ring_func_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/feature_of_secondary_ring" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>

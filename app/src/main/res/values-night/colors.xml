@@ -2,4 +2,6 @@
 <resources>
     <color name="app_background">#1A1A1A</color>
     <color name="app_foreground">#303030</color>
+    <color name="bg_anti_color">#fff</color>
+
 </resources>
