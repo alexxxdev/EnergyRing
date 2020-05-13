@@ -37,7 +37,7 @@
                 android:text="-"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
 
-            <androidx.appcompat.widget.AppCompatSeekBar
+            <SeekBar
                 android:id="@+id/seek_bar_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

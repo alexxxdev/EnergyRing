@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
         )
 
         val ta = obtainStyledAttributes(attrs)
-        val id = ta.getResourceId(0,0)
+        val id = ta.getResourceId(0, 0)
         val d = ta.getDrawable(0)
 
         setContentView(R.layout.activity_main)
@@ -196,11 +196,12 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
             checkBoxPrompt(R.string.display_only_this_model, isCheckedDefault = ds.size != allDs.size) { c ->
                 val dss = if (c) allDs.filter { it.model == Build.MODEL }
                 else allDs
-                listItems(items = dss.map { it.name }) { _, i, _ ->
+                listItems(items = dss.map { it.name }, waitForPositiveButton = false) { _, i, _ ->
                     applyConfig(dss[i])
                 }
             }
             positiveButton(R.string.edit) { editLocalConfig() }
+            negativeButton(R.string.close)
         }
     }
 

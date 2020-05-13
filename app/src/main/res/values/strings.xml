@@ -49,6 +49,7 @@
     <string name="double_ring_function">圆环功能</string>
     <string name="battery_direction_format">电池方向：%s</string>
     <string name="feature_of_secondary_ring">第二圆环功能： %s</string>
+    <string name="close">关闭</string>
     <array name="way_of_donate">
         <item>支付宝</item>
         <item>微信</item>

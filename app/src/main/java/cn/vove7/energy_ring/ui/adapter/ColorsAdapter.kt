@@ -28,9 +28,9 @@ class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorViewHolder>() {
         val colorView = TextView(parent.context)
         colorView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
         colorView.setTextColor(Color.WHITE)
-        colorView.setPadding(20, 20, 20, 20)
+        colorView.setPadding(20, 10, 20, 10)
         colorView.gravity = Gravity.CENTER
-        colorView.layoutParams = FrameLayout.LayoutParams(-2, -2).also {
+        colorView.layoutParams = FrameLayout.LayoutParams(-2, -1).also {
             it.setMargins(10, 10, 10, 10)
         }
         return ColorViewHolder(colorView)

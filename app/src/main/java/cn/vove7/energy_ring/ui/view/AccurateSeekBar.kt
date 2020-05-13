@@ -1,6 +1,7 @@
 package cn.vove7.energy_ring.ui.view
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
@@ -25,8 +26,12 @@ class AccurateSeekBar @JvmOverloads constructor(
         }
     var minVal: Int = 0
         set(value) {
-            field = value
-            seek_bar_view.min = value
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                field = value
+                seek_bar_view.min = value
+            } else {
+                maxVal -= value
+            }
         }
 
     var maxVal: Int = 100
@@ -45,8 +50,8 @@ class AccurateSeekBar @JvmOverloads constructor(
         LayoutInflater.from(context).inflate(R.layout.accurate_seek_bar, this)
         val ats = context.obtainStyledAttributes(attrs, R.styleable.AccurateSeekBar)
         title = ats.getString(R.styleable.AccurateSeekBar_title)
-        minVal = ats.getInt(R.styleable.AccurateSeekBar_min, 0)
         maxVal = ats.getInt(R.styleable.AccurateSeekBar_max, 100)
+        minVal = ats.getInt(R.styleable.AccurateSeekBar_min, 0)
 
         ats.recycle()
         plus_view.setOnClickListener {
