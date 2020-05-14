@@ -8,6 +8,7 @@ import android.view.WindowManager
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.PowerEventReceiver
 import cn.vove7.energy_ring.listener.RotationListener
+import cn.vove7.energy_ring.listener.ScreenListener
 import cn.vove7.energy_ring.util.Config
 
 /**
@@ -31,6 +32,7 @@ class App : Application() {
         super.onCreate()
 
         FloatRingWindow.start()
+        ScreenListener.start()
         PowerEventReceiver.start()
         if (Config.autoHideRotate) {
             RotationListener.start()
