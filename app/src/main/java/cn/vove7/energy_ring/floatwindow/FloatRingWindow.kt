@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
@@ -94,11 +95,13 @@ object FloatRingWindow {
 
     private val bodyView by lazy {
         FrameLayout(App.INS).apply {
+            lastChange = SystemClock.elapsedRealtime()
             addView(displayEnergyStyle.displayView, -2, -2)
         }
     }
 
     fun onShapeTypeChanged() {
+        lastChange = SystemClock.elapsedRealtime()
         displayEnergyStyle.onRemove()
         displayEnergyStyleDelegate.clearWeakValue()
         bodyView.apply {
@@ -130,9 +133,22 @@ object FloatRingWindow {
         if (!isShowing) {
             return
         }
+        wm.updateViewLayout(bodyView, layoutParams)
+        checkValid() ?: return
         displayEnergyStyle.update(p)
         bodyView.requestLayout()
-        wm.updateViewLayout(bodyView, layoutParams)
+    }
+
+    private const val periodRefreshView = 5 * 60 * 1000
+
+    private var lastChange = 0L
+
+    fun checkValid(): Unit? {
+        if (SystemClock.elapsedRealtime() - lastChange > periodRefreshView) {
+            onShapeTypeChanged()
+            return null
+        }
+        return Unit
     }
 
     fun onCharging() {

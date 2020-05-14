@@ -5,10 +5,8 @@ import android.animation.ValueAnimator
 import android.os.SystemClock
 import android.util.Log
 import android.view.animation.LinearInterpolator
-import android.widget.Toast
 import androidx.annotation.CallSuper
 import cn.vove7.energy_ring.App
-import cn.vove7.energy_ring.BuildConfig
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.PowerEventReceiver
 import cn.vove7.energy_ring.util.Config
@@ -50,6 +48,7 @@ abstract class RotateAnimatorSupporter : EnergyStyle {
                 lastUpdateTime = now
                 lastRotation = it.animatedValue as Float
                 Log.v(TAG, "rotate update  ----> $lastRotation")
+                FloatRingWindow.checkValid() ?: return@addUpdateListener
                 onAnimatorUpdate(lastRotation)
             }
         }
