@@ -81,6 +81,7 @@ class RingView @JvmOverloads constructor(
         paint.style = Paint.Style.STROKE
         canvas.drawArc(rectF, 0f, 360f, true, paint)
 
+        initPaint()
         //圆环
         paint.strokeWidth = strokeWidth
         paint.style = Paint.Style.STROKE
