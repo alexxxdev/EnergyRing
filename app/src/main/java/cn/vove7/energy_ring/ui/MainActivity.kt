@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
             R.id.menu_about -> showAbout()
             R.id.menu_color_mode -> pickColorMode()
             R.id.menu_model_preset -> pickPreSet()
+            R.id.menu_force_refresh -> FloatRingWindow.onShapeTypeChanged()
             R.id.fullscreen_auto_hide -> {
                 Config.autoHideFullscreen = !Config.autoHideFullscreen
                 item.isChecked = Config.autoHideFullscreen
@@ -290,7 +291,10 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
                     |- 全屏自动隐藏（跟随状态栏）
                     |- 横屏自动隐藏
                     |- 充电动画
-                    |- 不受分辨率影响(2k/1080p)""".trimMargin())
+                    |- 不受分辨率影响(2k/1080p)
+                    |
+                    |某些时候会出现“冻结”情况，更改属性 圆环不会变化，可以在菜单强制刷新或切换形状。
+                    |""".trimMargin())
             negativeButton(R.string.author) {
                 try {
                     val intent = Intent(Intent.ACTION_VIEW)

@@ -19,6 +19,9 @@
     <item
         android:id="@+id/menu_color_mode"
         android:title="@string/color_mode" />
+    <item
+        android:id="@+id/menu_force_refresh"
+        android:title="@string/force_refresh" />
 
     <item
         android:id="@+id/menu_about"

@@ -53,6 +53,7 @@
     <string name="foreground_service_title">Energy Ring 前台服务(可长按关闭通知)</string>
     <string name="color_mode">颜色模式</string>
     <string name="not_support_current_mode">暂不支持当前形状</string>
+    <string name="force_refresh">强制刷新</string>
     <array name="way_of_donate">
         <item>支付宝</item>
         <item>微信</item>
