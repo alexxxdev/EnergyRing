@@ -17,6 +17,10 @@
         android:checkable="true"
         android:title="@string/auto_hide_on_fullscreen" />
     <item
+        android:id="@+id/menu_color_mode"
+        android:title="@string/color_mode" />
+
+    <item
         android:id="@+id/menu_about"
         android:icon="@drawable/ic_info"
         android:title="@string/about"

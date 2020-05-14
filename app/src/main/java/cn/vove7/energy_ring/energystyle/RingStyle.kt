@@ -34,7 +34,11 @@ class RingStyle : EnergyStyle, RotateAnimatorSupporter() {
             if (progress != null) {
                 this.progress = progress
             }
-            mainColor = getColorByRange(this.progressf, Config.colors)
+            if (Config.colorMode == 2) {
+                doughnutColors = Config.colors
+            } else {
+                mainColor = getColorByRange(this.progressf, Config.colors)
+            }
             bgColor = Config.ringBgColor
             reSize(Config.size)
             requestLayout()

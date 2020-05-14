@@ -9,9 +9,7 @@ import android.os.BatteryManager
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
-import android.view.View
 import android.view.WindowManager
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import cn.vove7.energy_ring.App
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.colorChooser
@@ -124,11 +122,10 @@ val isOnCharging: Boolean
     get() = {
         val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         val intent = App.INS.registerReceiver(null, filter)
-        val i = intent?.getIntExtra(BatteryManager.EXTRA_STATUS,
-                BatteryManager.BATTERY_STATUS_UNKNOWN) == BatteryManager.BATTERY_STATUS_CHARGING
-        val j = intent?.extras?.get("charge_status") == "1"
+        val status = intent?.getIntExtra(BatteryManager.EXTRA_STATUS, BatteryManager.BATTERY_STATUS_UNKNOWN)
+        val i = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL
         Log.d("---", "isCharging ---> $i")
-        i || j
+        i
     }.invoke()
 
 val batteryLevel: Int
@@ -147,10 +144,12 @@ fun getColorByRange(progress: Float, colors: IntArray): Int {
     if (progress < 0) {
         return colors[0]
     }
-    val perP = 1f / (colors.size - 1)
+    val perP = 1f / (if (Config.colorMode == 0) colors.size - 1 else colors.size)
     (0 until colors.size - 1).forEach {
         if (progress >= it * perP && progress < perP * (it + 1)) {
-            return aev.evaluate((progress - it * perP) / perP, colors[it], colors[it + 1])
+            Log.d("Debug :", "getColorByRange  ----> $progress $perP $it")
+            return if (Config.colorMode == 0) aev.evaluate((progress - it * perP) / perP, colors[it], colors[it + 1])
+            else colors[it]
         }
     }
     return colors.last()

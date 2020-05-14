@@ -17,6 +17,7 @@ import cn.vove7.energy_ring.listener.RotationListener
 import cn.vove7.energy_ring.model.ShapeType
 import cn.vove7.energy_ring.ui.adapter.StylePagerAdapter
 import cn.vove7.energy_ring.util.Config
+import cn.vove7.energy_ring.util.ConfigInfo
 import cn.vove7.energy_ring.util.DonateHelper
 import cn.vove7.energy_ring.util.isDarkMode
 import com.afollestad.materialdialogs.MaterialDialog
@@ -47,15 +48,6 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
                         0x00000010
         }
 
-        val attrs = intArrayOf(
-                android.R.attr.selectableItemBackgroundBorderless,
-                android.R.attr.selectableItemBackground
-        )
-
-        val ta = obtainStyledAttributes(attrs)
-        val id = ta.getResourceId(0, 0)
-        val d = ta.getDrawable(0)
-
         setContentView(R.layout.activity_main)
 
         style_view_pager.adapter = pageAdapter
@@ -68,8 +60,9 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
 
         menuInflater.inflate(R.menu.main, menu_view.menu)
         menu_view.setOnMenuItemClickListener(this)
-        menu_view.menu.getItem(1).isChecked = Config.autoHideRotate
-        menu_view.menu.getItem(2).isChecked = Config.autoHideFullscreen
+        menu_view.menu.findItem(R.id.rotate_auto_hide).isChecked = Config.autoHideRotate
+        menu_view.menu.findItem(R.id.fullscreen_auto_hide).isChecked = Config.autoHideFullscreen
+        refreshMenu()
     }
 
     private fun initRadioStylesView() {
@@ -97,6 +90,7 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
     override fun onMenuItemClick(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_about -> showAbout()
+            R.id.menu_color_mode -> pickColorMode()
             R.id.menu_model_preset -> pickPreSet()
             R.id.fullscreen_auto_hide -> {
                 Config.autoHideFullscreen = !Config.autoHideFullscreen
@@ -113,6 +107,26 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
             }
         }
         return true
+    }
+
+    private fun pickColorMode() {
+        if (Config.energyType == ShapeType.PILL) {
+            Toast.makeText(this, R.string.not_support_current_mode, Toast.LENGTH_SHORT).show()
+            return
+        }
+        MaterialDialog(this).show {
+            title(R.string.color_mode)
+            listItems(R.array.modes_of_color) { _, i, _ ->
+                Config.colorMode = i
+                refreshMenu()
+                FloatRingWindow.update()
+            }
+        }
+    }
+
+    private fun refreshMenu() {
+        menu_view.menu.findItem(R.id.menu_color_mode).title = getString(R.string.color_mode) + ": " +
+                resources.getStringArray(R.array.modes_of_color)[Config.colorMode]
     }
 
     private var firstIn = true
@@ -147,7 +161,7 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
     }
 
     private fun outConfig(view: View) {
-        val info = Config.Info.fromConfig(Build.MODEL)
+        val info = ConfigInfo.fromConfig(Build.MODEL)
         val msg = GsonBuilder().setPrettyPrinting().create().toJson(info)
         MaterialDialog(this).show {
             title(R.string.config_data)
@@ -162,7 +176,7 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
         }
     }
 
-    private fun saveConfig(info: Config.Info, name: CharSequence? = null) {
+    private fun saveConfig(info: ConfigInfo, name: CharSequence? = null) {
         MaterialDialog(this@MainActivity).show {
             title(R.string.config_title)
             input(waitForPositiveButton = true, prefill = name) { _, s ->
@@ -219,33 +233,8 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
         }
     }
 
-    private fun applyConfig(info: Config.Info) {
-        Config.posXf = info.posxf
-        Config.posYf = info.posyf
-        Config.sizef = info.sizef
-        Config.strokeWidthF = info.strokeWidth
-
-        info.colors?.also {
-            if (it.isNotEmpty()) {
-                Config.colors = it
-            }
-        }
-
-        info.bgColor?.also {
-            Config.ringBgColor = it
-        }
-
-        when (info.energyType) {
-            ShapeType.DOUBLE_RING -> {
-                Config.spacingWidthF = info.spacingWidth
-                info.secondaryRingFeature?.also {
-                    Config.secondaryRingFeature = it
-                }
-            }
-            ShapeType.PILL -> {
-                Config.spacingWidthF = info.spacingWidth
-            }
-        }
+    private fun applyConfig(info: ConfigInfo) {
+        info.applyConfig()
         if (info.energyType != Config.energyType) {
             Config.energyType = info.energyType ?: ShapeType.RING
             FloatRingWindow.onShapeTypeChanged()
@@ -282,7 +271,7 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
 
     private fun importConfig(content: String, save: Boolean) {
         kotlin.runCatching {
-            Gson().fromJson(content, Config.Info::class.java)
+            Gson().fromJson(content, ConfigInfo::class.java)
         }.onSuccess {
             applyConfig(it)
             if (save) {

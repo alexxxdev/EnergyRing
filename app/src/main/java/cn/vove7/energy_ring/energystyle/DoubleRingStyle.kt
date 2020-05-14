@@ -86,7 +86,11 @@ class DoubleRingStyle : RotateAnimatorSupporter(), MonitorListener {
                 } else {
                     this.progress = lastMonitorValue
                 }
-                mainColor = getColorByRange(this.progressf, Config.colors)
+                if (Config.colorMode == 2) {
+                    doughnutColors = Config.colors
+                } else {
+                    mainColor = getColorByRange(this.progressf, Config.colors)
+                }
                 bgColor = Config.ringBgColor
                 reSize(Config.size)
                 requestLayout()

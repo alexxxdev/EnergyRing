@@ -61,8 +61,12 @@ class PillView @JvmOverloads constructor(
         rectF.set(w_2 - th, -h_2, w_2, h_2)
         canvas.drawArc(rectF, 270f, 180f, false, paint)
 
-        canvas.drawLine(h_2 - w_2, -h_2, w_2 - h_2, -h_2, paint)
-        canvas.drawLine(h_2 - w_2, h_2, w_2 - h_2, h_2, paint)
+        canvas.drawLine(h_2 - w_2 - lineAcc, -h_2, w_2 - h_2 + lineAcc, -h_2, paint)
+        canvas.drawLine(h_2 - w_2 - lineAcc, h_2, w_2 - h_2 + lineAcc, h_2, paint)
 
+    }
+
+    companion object {
+        const val lineAcc = 0.5f
     }
 }

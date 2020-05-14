@@ -1,14 +1,12 @@
 package cn.vove7.energy_ring.ui.view
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import cn.vove7.energy_ring.BuildConfig
+import cn.vove7.energy_ring.util.Config
 import kotlin.math.min
 
 
@@ -30,6 +28,26 @@ class RingView @JvmOverloads constructor(
 
     var mainColor = Color.GREEN
     var bgColor = if (BuildConfig.DEBUG) Color.argb(10, 10, 10, 10) else Color.TRANSPARENT
+
+    var doughnutColors = intArrayOf(
+            Color.RED,
+            Color.GREEN,
+            Color.BLUE,
+            Color.RED
+    )
+        set(value) {
+            field = value
+            field = value.let {
+                when (it.size) {
+                    1 -> intArrayOf(it[0], it[0])
+                    0 -> intArrayOf(Color.RED, Color.GREEN, Color.BLUE, Color.RED)
+                    else -> it
+                }
+            }
+            shader = SweepGradient(0f, 0f, doughnutColors, null)
+        }
+
+    private var shader = SweepGradient(0f, 0f, doughnutColors, null)
 
     var strokeWidthF = 8f
     private val paint by lazy {
@@ -66,7 +84,11 @@ class RingView @JvmOverloads constructor(
         //圆环
         paint.strokeWidth = strokeWidth
         paint.style = Paint.Style.STROKE
-        paint.color = mainColor
+        if (Config.colorMode == 2) {
+            paint.shader = shader
+        } else {
+            paint.color = mainColor
+        }
         canvas.drawArc(rectF, 0f, 360f * progressf, false, paint)
     }
 

@@ -51,6 +51,8 @@
     <string name="feature_of_secondary_ring">第二圆环功能： %s</string>
     <string name="close">关闭</string>
     <string name="foreground_service_title">Energy Ring 前台服务(可长按关闭通知)</string>
+    <string name="color_mode">颜色模式</string>
+    <string name="not_support_current_mode">暂不支持当前形状</string>
     <array name="way_of_donate">
         <item>支付宝</item>
         <item>微信</item>
@@ -61,5 +63,10 @@
     <array name="double_ring_battery_direction">
         <item>左边</item>
         <item>右边</item>
+    </array>
+    <array name="modes_of_color">
+        <item>纯色渐变</item>
+        <item>纯色</item>
+        <item>均匀渐变</item>
     </array>
 </resources>
