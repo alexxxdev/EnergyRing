@@ -247,7 +247,7 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
             }
         }
         if (info.energyType != Config.energyType) {
-            Config.energyType = info.energyType
+            Config.energyType = info.energyType ?: ShapeType.RING
             FloatRingWindow.onShapeTypeChanged()
         } else {
             FloatRingWindow.update()

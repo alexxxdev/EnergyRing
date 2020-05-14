@@ -117,7 +117,7 @@ object Config {
             @SerializedName("strokeWidth", alternate = ["strokeWith"])
             val strokeWidth: Float,
             val sizef: Float,
-            val energyType: ShapeType = ShapeType.RING,
+            val energyType: ShapeType? = ShapeType.RING,
             val spacingWidth: Int = -1,
             val bgColor: Int? = null,
             val doubleRingChargingIndex: Int = 0,
