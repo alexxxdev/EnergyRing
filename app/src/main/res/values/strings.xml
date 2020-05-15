@@ -57,6 +57,8 @@
     <string name="label_notification_service">Energy Ring 通知监听服务</string>
     <string name="setting_screen_off_remind">熄屏提醒设置</string>
     <string name="prompt">提示</string>
+    <string name="preview">预览</string>
+    <string name="flash_light_on_screen_off">熄屏闪光提醒[实验]</string>
     <array name="way_of_donate">
         <item>支付宝</item>
         <item>微信</item>

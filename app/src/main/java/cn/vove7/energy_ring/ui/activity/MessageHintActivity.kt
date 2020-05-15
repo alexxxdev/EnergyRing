@@ -48,7 +48,7 @@ class MessageHintActivity : AppCompatActivity() {
     }
 
     val ledColor: Int by lazy {
-        intent?.getIntExtra("color", Color.BLUE) ?: Color.BLUE
+        intent?.getIntExtra("color", Color.GREEN) ?: Color.GREEN
     }
 
     private fun initFlags() {
@@ -57,6 +57,8 @@ class MessageHintActivity : AppCompatActivity() {
             lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
             window.attributes = lp
         }
+        window?.decorView?.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN)
         var commonFlags = WindowManager.LayoutParams.FLAG_FULLSCREEN or
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
                 WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or

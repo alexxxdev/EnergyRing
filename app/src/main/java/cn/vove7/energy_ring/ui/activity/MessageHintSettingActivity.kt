@@ -4,22 +4,15 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
-import android.view.KeyEvent
-import android.view.View
 import android.widget.Toast
-import androidx.recyclerview.widget.MergeAdapter
 import cn.vove7.energy_ring.R
+import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.NotificationListener
-import cn.vove7.energy_ring.ui.adapter.AppListAdapter
-import cn.vove7.energy_ring.util.AppInfo
 import cn.vove7.energy_ring.util.Config
-import cn.vove7.energy_ring.util.spliteBy
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import kotlinx.android.synthetic.main.activity_message_hint_setting.*
-import kotlin.concurrent.thread
 import kotlin.math.ceil
 
 /**
@@ -45,7 +38,18 @@ class MessageHintSettingActivity : BaseActivity() {
                 refreshStatusButton()
             }
         }
+        preview_button.setOnClickListener {
+            FloatRingWindow.hide()
+            startActivityForResult(Intent(this, MessageHintActivity::class.java), 10)
+        }
         showTips()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 10) {
+            FloatRingWindow.show()
+        }
     }
 
     private fun showTips() {
