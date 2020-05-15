@@ -50,7 +50,6 @@ class PillView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         canvas.translate((width / 2).toFloat(), (height / 2).toFloat())
         val strokeWidth = height / 2 * strokeWidthF / 100f + 1
-        Log.d("Debug :", "strokeWidth  ----> ${strokeWidth}")
         val pf = progressf
 
         val tw = width - strokeWidth
@@ -91,9 +90,6 @@ class PillView @JvmOverloads constructor(
         val r3 = r2 + (v / C)
         val r4 = 1f - r1
 
-        Log.d("Debug :", "onDraw  ----> $r1 $r2 $r3 $r4")
-
-
         val rf = pillRotation % 360 / 360
         drawOneCircle(canvas, rf, (pf + rf).let { if (it > 1) 1f else it }, r1, r2, r3, r4, h_2, w_2, th, v, C)
         if (rf + pf > 1) {
@@ -106,24 +102,19 @@ class PillView @JvmOverloads constructor(
             r1: Float, r2: Float, r3: Float, r4: Float,
             h_2: Float, w_2: Float, th: Float, v: Float, C: Float
     ) {
-        Log.d("Debug :", "drawOneCircle  ----> $sf $ef")
         //上边线 右
         if (sf <= r1) {
-            Log.d("Debug :", "  ----> 上边线 右")
             if (ef > r1) {
                 canvas.drawLine(C * sf, -h_2, (w_2 - h_2 + lineAcc), -h_2, paint)
             } else {
                 canvas.drawLine(C * sf, -h_2, v / 2 * ef / r1, -h_2, paint)
                 return
             }
-        } else {
-            Log.d("Debug :", "  ----> no 上边线 右 $sf")
         }
 
         rectF.set(w_2 - th, -h_2, w_2, h_2)
         //右圆
         if (sf <= r2) {
-            Log.d("Debug :", "  ----> 右圆")
             val offsetAngle = if (sf <= r1) 0f
             else (C * 360f * (sf - r1) / Math.PI / th).toFloat()
 
@@ -133,13 +124,10 @@ class PillView @JvmOverloads constructor(
                 canvas.drawArc(rectF, 270f + offsetAngle, 180f * (ef - r1) / (r2 - r1) - offsetAngle, false, paint)
                 return
             }
-        } else {
-            Log.d("Debug :", "  ----> no 右圆")
         }
 
         //下边线
         if (sf <= r3) {
-            Log.d("Debug :", "  ----> 下边线")
             val startXOffset = if (sf <= r2) 0f else (sf - r2) * C
             val startX = v / 2 + lineAcc - startXOffset
             if (ef > r3) {
@@ -149,14 +137,11 @@ class PillView @JvmOverloads constructor(
                 canvas.drawLine(startX, h_2, end, h_2, paint)
                 return
             }
-        } else {
-            Log.d("Debug :", "  ----> no 下边线")
         }
 
         //左圆
         rectF.set(-w_2, -h_2, th - w_2, h_2)
         if (sf < r4) {
-            Log.d("Debug :", "  ----> 左圆")
             val saOffset = if (sf <= r3) 0f else ((sf - r3) * C * 360f / Math.PI / th).toFloat()
 
             if (ef > r4) {
@@ -165,12 +150,9 @@ class PillView @JvmOverloads constructor(
                 canvas.drawArc(rectF, 90f + saOffset, 180f * (ef - r3) / (r4 - r3) - saOffset, false, paint)
                 return
             }
-        } else {
-            Log.d("Debug :", "  ----> no 左圆")
         }
 
         //上边线左
-        Log.d("Debug :", "  ----> 上边线左")
         val sxOffset = if (sf <= r4) 0f else C * (sf - r4)
 
         val startX = h_2 - w_2 - lineAcc + sxOffset
