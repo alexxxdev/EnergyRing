@@ -19,7 +19,7 @@ class MemoryMonitor(override val monitorListener: MonitorListener) : TimerMonito
     override fun getProgress(): Int {
         val mi = ActivityManager.MemoryInfo()
         am.getMemoryInfo(mi)
-        val p = (mi.availMem * 1000 / mi.totalMem).toInt()
+        val p = ((mi.totalMem - mi.availMem) * 1000 / mi.totalMem).toInt()
         Log.d("Debug :", "getProgress  ----> ${mi.availMem}/${mi.totalMem}  $p")
         return p
     }
