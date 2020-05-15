@@ -61,6 +61,7 @@ object PowerEventReceiver : BroadcastReceiver() {
                 if (l != lastValue) {
                     lastValue = l
                     Log.d("Debug :", "onReceive  ----> ACTION_BATTERY_CHANGED $l")
+                    FloatRingWindow.onShapeTypeChanged()
                     FloatRingWindow.update(l)
                 }
             }

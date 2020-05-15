@@ -1,9 +1,11 @@
 package cn.vove7.energy_ring.util
 
 import cn.vove7.energy_ring.model.ShapeType
-import cn.vove7.smartkey.annotation.Config as SC
+import cn.vove7.smartkey.AConfig
 import cn.vove7.smartkey.key.smartKey
+import cn.vove7.smartkey.key.smartKeyList
 import com.google.gson.annotations.SerializedName
+import cn.vove7.smartkey.annotation.Config as SC
 
 /**
  * # Config
@@ -12,7 +14,7 @@ import com.google.gson.annotations.SerializedName
  * 2020/5/8
  */
 @SC("app")
-object Config {
+object Config : AConfig() {
 
     var energyType by smartKey(ShapeType.RING)
 
@@ -68,6 +70,9 @@ object Config {
 
     var tipOfRecent by smartKey(true)
 
+
+    var notificationListenerEnabled by smartKey(false)
+
     val devicesWeakLazy = weakLazy {
         listOf(
                 ConfigInfo("一加8 Pro", "IN2020", 148, 22, 8f * 2, 0.06736f),
@@ -110,25 +115,42 @@ object Config {
 
     var localConfig by smartKey(arrayOf<ConfigInfo>())
 
+    var notifyApps by smartKeyList(listOf(
+            "com.tencent.mobileqq",
+            "com.tencent.mm",
+            "com.alibaba.android.rimet"
+    ))
+
 }
 
 //形状
 @Suppress("ArrayInDataClass")
 data class ConfigInfo(
+        @SerializedName("name", alternate = ["a"])
         var name: String,
+        @SerializedName("model", alternate = ["b"])
         val model: String,
+        @SerializedName("posxf", alternate = ["c"])
         val posxf: Int,
+        @SerializedName("posyf", alternate = ["d"])
         val posyf: Int,
         @SerializedName("strokeWidth", alternate = ["strokeWith"])
         val strokeWidth: Float,
+        @SerializedName("sizef", alternate = ["e"])
         val sizef: Float,
+        @SerializedName("energyType", alternate = ["f"])
         val energyType: ShapeType? = ShapeType.RING,
+        @SerializedName("spacingWidth", alternate = ["g"])
         val spacingWidth: Int = -1,
+        @SerializedName("bgColor", alternate = ["h"])
         val bgColor: Int? = null,
+        @SerializedName("doubleRingChargingIndex", alternate = ["i"])
         val doubleRingChargingIndex: Int = 0,
+        @SerializedName("secondaryRingFeature", alternate = ["j"])
         val secondaryRingFeature: Int? = 0,
+        @SerializedName("colors", alternate = ["k"])
         val colors: IntArray? = null,
-
+        @SerializedName("colorMode", alternate = ["l"])
         val colorMode: Int = 0
 ) {
     companion object {

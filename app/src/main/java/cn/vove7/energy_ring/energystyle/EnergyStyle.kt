@@ -15,4 +15,5 @@ interface EnergyStyle {
 
     fun onHide()
 
+    fun setColor(color: Int) {}
 }

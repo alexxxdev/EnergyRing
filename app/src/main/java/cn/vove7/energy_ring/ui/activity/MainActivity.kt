@@ -1,4 +1,4 @@
-package cn.vove7.energy_ring.ui
+package cn.vove7.energy_ring.ui.activity
 
 import android.content.*
 import android.net.Uri
@@ -10,7 +10,7 @@ import android.view.View
 import android.widget.ActionMenuView
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import cn.vove7.energy_ring.BuildConfig
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.RotationListener
@@ -19,7 +19,6 @@ import cn.vove7.energy_ring.ui.adapter.StylePagerAdapter
 import cn.vove7.energy_ring.util.Config
 import cn.vove7.energy_ring.util.ConfigInfo
 import cn.vove7.energy_ring.util.DonateHelper
-import cn.vove7.energy_ring.util.isDarkMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
@@ -33,7 +32,7 @@ import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.ceil
 
-class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener {
+class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
 
     private val pageAdapter by lazy {
         StylePagerAdapter(supportFragmentManager)
@@ -41,17 +40,17 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!isDarkMode) {
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
-                        0x00000010
-        }
 
         setContentView(R.layout.activity_main)
 
         style_view_pager.adapter = pageAdapter
 
+        if (BuildConfig.DEBUG) {
+            view_info_view.setOnLongClickListener {
+                startActivity(Intent(this, MessageHintActivity::class.java))
+                true
+            }
+        }
         view_info_view.setOnClickListener(::outConfig)
         import_view.setOnClickListener(::importFromClip)
         initRadioStylesView()
@@ -92,6 +91,7 @@ class MainActivity : AppCompatActivity(), ActionMenuView.OnMenuItemClickListener
             R.id.menu_about -> showAbout()
             R.id.menu_color_mode -> pickColorMode()
             R.id.menu_model_preset -> pickPreSet()
+            R.id.menu_screen_off_remind -> startActivity(Intent(this, MessageHintSettingActivity::class.java))
             R.id.menu_force_refresh -> FloatRingWindow.onShapeTypeChanged()
             R.id.fullscreen_auto_hide -> {
                 Config.autoHideFullscreen = !Config.autoHideFullscreen

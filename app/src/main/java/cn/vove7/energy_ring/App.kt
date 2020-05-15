@@ -1,6 +1,7 @@
 package cn.vove7.energy_ring
 
 import android.app.Application
+import android.app.KeyguardManager
 import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
@@ -25,6 +26,9 @@ class App : Application() {
         val windowsManager by lazy {
             INS.getSystemService(WindowManager::class.java)!!
         }
+        val keyguardManager by lazy {
+            INS.getSystemService(KeyguardManager::class.java)!!
+        }
     }
 
     override fun onCreate() {
@@ -44,5 +48,10 @@ class App : Application() {
         } else {
             startService(foreService)
         }
+    }
+
+    override fun startActivity(intent: Intent?) {
+        intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        super.startActivity(intent)
     }
 }

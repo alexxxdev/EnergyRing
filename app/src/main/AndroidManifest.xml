@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature
+        android:name="android.software.companion_device_setup" />
 
     <application
         android:name=".App"
@@ -18,14 +22,25 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="android.notch_support"
-            android:value="false" />
-        <activity android:name=".ui.MainActivity">
+            android:value="true" />
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.2" />
+
+        <activity android:name=".ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activity.MessageHintActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:theme="@style/BlackHole" />
+
+        <activity android:name=".ui.activity.MessageHintSettingActivity" />
 
         <receiver android:name=".listener.BootCompleteListener">
             <intent-filter>
@@ -33,9 +48,20 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".ForegroundService"
+        <service
+            android:name=".ForegroundService"
             android:label="前台服务"
             android:priority="1000" />
+
+        <service
+            android:name=".listener.NotificationListener"
+            android:label="@string/label_notification_service"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

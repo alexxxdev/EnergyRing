@@ -26,6 +26,13 @@ class PillStyle : RotateAnimatorSupporter() {
 
     override fun onAnimatorUpdate(rotateValue: Float) {
         pillView.pillRotation = rotateValue
+        pillView.postInvalidate()
+    }
+
+    override fun setColor(color: Int) {
+        (displayView as PillView).apply {
+            mainColor = color
+        }
     }
 
     override fun update(progress: Int?) {

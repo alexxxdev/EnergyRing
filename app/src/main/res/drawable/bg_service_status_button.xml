@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <ripple android:color="?attr/colorControlHighlight">
+            <item>
+                <shape>
+                    <gradient android:angle="0" android:endColor="#F50057" android:startColor="#C51162" />
+                    <corners android:radius="10dp" />
+                </shape>
+            </item>
+        </ripple>
+    </item>
+    <item android:state_selected="false">
+        <ripple android:color="?attr/colorControlHighlight">
+            <item>
+                <shape>
+                    <gradient android:angle="0" android:endColor="#A7FFEB" android:startColor="#1DE9B6" />
+                    <corners android:radius="10dp" />
+                </shape>
+            </item>
+        </ripple>
+    </item>
+</selector>

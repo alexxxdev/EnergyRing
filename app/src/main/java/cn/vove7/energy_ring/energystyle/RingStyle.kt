@@ -28,6 +28,12 @@ class RingStyle : EnergyStyle, RotateAnimatorSupporter() {
         displayView.rotation = rotateValue
     }
 
+    override fun setColor(color: Int) {
+        (displayView as RingView).apply {
+            mainColor = color
+        }
+    }
+
     override fun update(progress: Int?) {
         (displayView as RingView).apply {
             strokeWidthF = Config.strokeWidthF

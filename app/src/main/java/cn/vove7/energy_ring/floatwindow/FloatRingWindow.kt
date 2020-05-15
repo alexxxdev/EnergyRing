@@ -17,6 +17,7 @@ import android.widget.Toast
 import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.energystyle.DoubleRingStyle
+import cn.vove7.energy_ring.energystyle.EnergyStyle
 import cn.vove7.energy_ring.energystyle.PillStyle
 import cn.vove7.energy_ring.energystyle.RingStyle
 import cn.vove7.energy_ring.listener.RotationListener
@@ -40,12 +41,15 @@ object FloatRingWindow {
         get() = Settings.canDrawOverlays(App.INS)
 
     private val displayEnergyStyleDelegate = weakLazy {
-        when (Config.energyType) {
-            ShapeType.RING -> RingStyle()
-            ShapeType.DOUBLE_RING -> DoubleRingStyle()
-            ShapeType.PILL -> PillStyle()
-        }
+        buildEnergyStyle()
     }
+
+    fun buildEnergyStyle(): EnergyStyle = when (Config.energyType) {
+        ShapeType.RING -> RingStyle()
+        ShapeType.DOUBLE_RING -> DoubleRingStyle()
+        ShapeType.PILL -> PillStyle()
+    }
+
     private val displayEnergyStyle by displayEnergyStyleDelegate
 
     private val wm: WindowManager = App.windowsManager
@@ -57,7 +61,6 @@ object FloatRingWindow {
             Toast.makeText(App.INS, R.string.request_float_window_permission, Toast.LENGTH_SHORT).show()
             val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + App.INS.packageName))
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             App.INS.startActivity(intent)
             thread {
                 while (!hasPermission) {
@@ -101,6 +104,11 @@ object FloatRingWindow {
     }
 
     fun onShapeTypeChanged() {
+        forceRefresh()
+        show()
+    }
+
+    fun forceRefresh() {
         lastChange = SystemClock.elapsedRealtime()
         displayEnergyStyle.onRemove()
         displayEnergyStyleDelegate.clearWeakValue()
@@ -110,7 +118,6 @@ object FloatRingWindow {
         }
         displayEnergyStyle.update(batteryLevel)
         displayEnergyStyle.reloadAnimation()
-        show()
     }
 
     private fun showInternal() {

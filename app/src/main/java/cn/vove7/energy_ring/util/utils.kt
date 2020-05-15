@@ -154,3 +154,12 @@ fun getColorByRange(progress: Float, colors: IntArray): Int {
     }
     return colors.last()
 }
+
+fun <T> Iterable<T>.spliteBy(p: (T) -> Boolean): Pair<List<T>, List<T>> {
+    val a = mutableListOf<T>()
+    val b = mutableListOf<T>()
+    forEach { item ->
+        (if (p(item)) a else b).add(item)
+    }
+    return a to b
+}

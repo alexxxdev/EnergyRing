@@ -9,6 +9,7 @@ import androidx.annotation.CallSuper
 import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.PowerEventReceiver
+import cn.vove7.energy_ring.listener.ScreenListener
 import cn.vove7.energy_ring.util.Config
 
 /**
@@ -27,8 +28,6 @@ abstract class RotateAnimatorSupporter : EnergyStyle {
 
     var rotateAnimator: Animator? = null
 
-    var lastUpdateTime = 0L
-
     private fun buildAnimator(
             start: Float = 0f,
             dur: Int
@@ -40,12 +39,6 @@ abstract class RotateAnimatorSupporter : EnergyStyle {
             interpolator = LinearInterpolator()
             duration = dur.toLong()
             addUpdateListener {
-                val now = SystemClock.elapsedRealtime()
-                if (!App.powerManager.isInteractive && now - lastUpdateTime < 5000L) {
-                    Log.v(TAG, "buildAnimator  ----> 息屏")
-                    return@addUpdateListener
-                }
-                lastUpdateTime = now
                 lastRotation = it.animatedValue as Float
                 Log.v(TAG, "rotate update  ----> $lastRotation")
                 FloatRingWindow.checkValid() ?: return@addUpdateListener

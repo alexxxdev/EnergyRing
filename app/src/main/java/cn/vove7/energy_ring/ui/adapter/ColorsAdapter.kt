@@ -66,7 +66,7 @@ class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorViewHolder>() {
                     kotlin.runCatching {
                         Config.colors = cs.toMutableList().apply { removeAt(position) }.toIntArray()
                         notifyDataSetChanged()
-                        FloatRingWindow.update()
+                        FloatRingWindow.onShapeTypeChanged()
                     }
                     true
                 }
@@ -90,7 +90,7 @@ class ColorsAdapter : RecyclerView.Adapter<ColorsAdapter.ColorViewHolder>() {
                 Config.colors = Config.colors.also { it[pos] = c }
                 notifyDataSetChanged()
             }
-            FloatRingWindow.update()
+            FloatRingWindow.onShapeTypeChanged()
         }
     }
 

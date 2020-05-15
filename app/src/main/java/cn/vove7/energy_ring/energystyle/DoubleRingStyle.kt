@@ -24,9 +24,7 @@ class DoubleRingStyle : RotateAnimatorSupporter(), MonitorListener {
     }
     private val ringView1 by ringView1Delegate
     private val ringView2Delegate = weakLazy {
-        RingView(App.INS).apply {
-            //todo lis bind
-        }
+        RingView(App.INS)
     }
     private val ringView2 by ringView2Delegate
 
@@ -72,6 +70,12 @@ class DoubleRingStyle : RotateAnimatorSupporter(), MonitorListener {
             lastMonitorValue = ps
             mainColor = getColorByRange(this.progressf, Config.colors)
             invalidate()
+        }
+    }
+
+    override fun setColor(color: Int) {
+        arrayOf(ringView1, ringView2).forEach {
+            it.mainColor = color
         }
     }
 

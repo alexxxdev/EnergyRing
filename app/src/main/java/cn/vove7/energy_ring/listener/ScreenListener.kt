@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.util.Log
 import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
+import cn.vove7.energy_ring.ui.activity.MessageHintActivity
 
 /**
  * # ScreenListener
@@ -26,15 +27,16 @@ object ScreenListener : BroadcastReceiver() {
     }
 
     @JvmStatic
-    var screenOn: Boolean = true
+    var screenOn: Boolean = App.powerManager.isInteractive
 
     @JvmStatic
-    var screenLocked: Boolean = false
+    var screenLocked: Boolean = App.keyguardManager.isDeviceLocked
 
     override fun onReceive(context: Context?, intent: Intent?) {
 
         when (intent?.action) {
             Intent.ACTION_SCREEN_ON -> {
+                FloatRingWindow.onShapeTypeChanged()
                 Log.d("Debug :", "onReceive  ----> 亮屏")
                 screenOn = true
             }
@@ -43,11 +45,15 @@ object ScreenListener : BroadcastReceiver() {
                 screenLocked = true
                 screenOn = false
                 FloatRingWindow.hide()
+                if (MessageHintActivity.isShowing) {
+                    MessageHintActivity.stopAndScreenOn()
+
+                }
             }
             Intent.ACTION_USER_PRESENT -> {
                 Log.d("Debug :", "onReceive  ----> 解锁")
-                FloatRingWindow.show()
                 screenLocked = false
+                FloatRingWindow.show()
             }
         }
     }

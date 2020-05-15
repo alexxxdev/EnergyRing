@@ -101,7 +101,7 @@
 }
 
 -keep class cn.vove7.energy_ring.util.Config {*;}
--keep class cn.vove7.energy_ring.util.Config$Info {*;}
+-keep class cn.vove7.energy_ring.util.ConfigInfo {*;}
 -keep class cn.vove7.smartkey.** {*;}
 
 -keep class com.google.android.material.** {*;}
