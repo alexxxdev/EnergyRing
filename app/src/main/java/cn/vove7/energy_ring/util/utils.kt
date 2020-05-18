@@ -11,6 +11,7 @@ import android.util.Log
 import android.util.Size
 import android.view.WindowManager
 import cn.vove7.energy_ring.App
+import cn.vove7.energy_ring.R
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.colorChooser
 import com.google.android.material.animation.ArgbEvaluatorCompat
@@ -48,6 +49,7 @@ fun pickColor(context: Context, initColor: Int? = null, title: String = "选取�
     val colors = mainColors
     MaterialDialog(context).show {
         title(text = title)
+        message(R.string.hint_color_pick_dialog)
         colorChooser(colors, subColors = subColors, allowCustomArgb = true,
                 showAlphaSelector = true,
                 initialSelection = initColor ?: colors[0],
