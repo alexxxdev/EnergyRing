@@ -83,7 +83,9 @@ class AccurateSeekBar @JvmOverloads constructor(
                 onChangeAction?.invoke(p, fromUser)
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                onStartAction?.invoke()
+            }
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 val p = if (aboveO) seekBar.progress else seekBar.progress + minVal
                 onStopAction?.invoke(p)
@@ -96,8 +98,13 @@ class AccurateSeekBar @JvmOverloads constructor(
     }
 
     private var onStopAction: ((progress: Int) -> Unit)? = null
+    private var onStartAction: (() -> Unit)? = null
 
     private var onChangeAction: ((progress: Int, fromUser: Boolean) -> Unit)? = null
+
+    fun onStart(startAction: () -> Unit) {
+        onStartAction = startAction
+    }
 
     fun onStop(stopAction: ((progress: Int) -> Unit)) {
         onStopAction = stopAction
