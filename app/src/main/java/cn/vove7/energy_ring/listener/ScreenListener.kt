@@ -36,9 +36,10 @@ object ScreenListener : BroadcastReceiver() {
 
         when (intent?.action) {
             Intent.ACTION_SCREEN_ON -> {
+                screenOn = true
                 FloatRingWindow.onShapeTypeChanged()
                 Log.d("Debug :", "onReceive  ----> 亮屏")
-                screenOn = true
+                FloatRingWindow.show()
             }
             Intent.ACTION_SCREEN_OFF -> {
                 Log.d("Debug :", "onReceive  ----> 关屏")
@@ -47,13 +48,11 @@ object ScreenListener : BroadcastReceiver() {
                 FloatRingWindow.hide()
                 if (MessageHintActivity.isShowing) {
                     MessageHintActivity.stopAndScreenOn()
-
                 }
             }
             Intent.ACTION_USER_PRESENT -> {
                 Log.d("Debug :", "onReceive  ----> 解锁")
                 screenLocked = false
-                FloatRingWindow.show()
             }
         }
     }
