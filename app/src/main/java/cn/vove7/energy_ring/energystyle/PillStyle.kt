@@ -46,7 +46,7 @@ class PillStyle : RotateAnimatorSupporter() {
             bgColor = Config.ringBgColor
 
             val h = Config.size
-            val w = Config.spacingWidth + h * 2
+            val w = Config.spacingWidth + h
             layoutParams = layoutParams?.also {
                 if (it.width != w || it.height != h) {
                     Log.d(TAG, "update  ----> ${w to h}")
