@@ -16,10 +16,10 @@
     <string name="clipboard_content">剪切板内容</string>
     <string name="empty_in_clipboard">前切板无内容</string>
     <string name="about">关于</string>
-    <string name="donate">捐赠</string>
+    <string name="support">支持一下</string>
     <string name="hint_preset_share">欢迎将配置分享至酷安评论区，底部[查看]按钮可复制配置\n下面机型并不一定完全适配，可自行微调。</string>
     <string name="config_data">配置数据</string>
-    <string name="way_donate">捐赠方式</string>
+    <string name="way_support">支持方式</string>
     <string name="hint_wx_donate">请截屏后使用微信扫码</string>
     <string name="request_float_window_permission">请开启悬浮窗权限</string>
     <string name="author">作者</string>
@@ -60,9 +60,11 @@
     <string name="preview">预览</string>
     <string name="flash_light_on_screen_off">熄屏闪光提醒[实验]</string>
     <string name="hint_color_pick_dialog">左滑可自定义颜色及透明度</string>
-    <array name="way_of_donate">
+    <string name="open_link">打开链接</string>
+    <array name="way_of_support">
         <item>支付宝</item>
         <item>微信</item>
+        <item>在 Github Star 仓库</item>
     </array>
     <array name="ring_features">
         <item>内存使用情况</item>

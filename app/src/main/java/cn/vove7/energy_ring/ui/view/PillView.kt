@@ -161,6 +161,6 @@ class PillView @JvmOverloads constructor(
 
 
     companion object {
-        const val lineAcc = 0f
+        const val lineAcc = 0.5f
     }
 }

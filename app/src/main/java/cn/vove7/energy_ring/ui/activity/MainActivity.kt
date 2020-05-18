@@ -306,14 +306,14 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
                     Toast.makeText(this@MainActivity, R.string.no_browser_available, Toast.LENGTH_SHORT).show()
                 }
             }
-            positiveButton(R.string.donate, click = ::donate)
+            positiveButton(R.string.support, click = ::donate)
         }
     }
 
     private fun donate(d: MaterialDialog) {
         MaterialDialog(this).show {
-            title(R.string.way_donate)
-            listItems(R.array.way_of_donate) { _, i, c ->
+            title(R.string.way_support)
+            listItems(R.array.way_of_support) { _, i, c ->
                 when (i) {
                     0 -> {
                         if (DonateHelper.isInstallAlipay(this@MainActivity)) {
@@ -325,7 +325,28 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
                     1 -> {
                         showWxQr()
                     }
+                    2 -> {
+                        starGithubRepo()
+                    }
                     //todo ad donate
+                }
+            }
+        }
+    }
+
+    private fun starGithubRepo() {
+        MaterialDialog(this).show {
+            title(text = "Star Github 仓库以支持作者")
+            message(text = "此方式您需要一个Github账号，若没有可使用邮箱注册；点击下面打开链接，点击Star按钮即可。")
+            positiveButton(R.string.open_link) {
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.data = Uri.parse("https://github.com/Vove7/yyets_flutter")
+                    startActivity(intent)
+                } catch (e: ActivityNotFoundException) {
+                    Toast.makeText(this@MainActivity,
+                            R.string.no_browser_available, Toast.LENGTH_SHORT).show()
                 }
             }
         }
