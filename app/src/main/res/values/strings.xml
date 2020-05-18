@@ -59,6 +59,7 @@
     <string name="prompt">提示</string>
     <string name="preview">预览</string>
     <string name="flash_light_on_screen_off">熄屏闪光提醒[实验]</string>
+    <string name="hint_color_pick_dialog">左滑可自定义颜色及透明度</string>
     <array name="way_of_donate">
         <item>支付宝</item>
         <item>微信</item>
