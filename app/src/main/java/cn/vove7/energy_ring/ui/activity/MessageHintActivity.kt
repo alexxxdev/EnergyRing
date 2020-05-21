@@ -40,16 +40,13 @@ class MessageHintActivity : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     App.keyguardManager.requestDismissKeyguard(this, null)
                 } else {
-                    //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
                     val wl = App.powerManager.newWakeLock(
                             PowerManager.ACQUIRE_CAUSES_WAKEUP or
                                     PowerManager.SCREEN_DIM_WAKE_LOCK, "cn.vove7.energy_ring.bright")
-                    //点亮屏幕
                     wl.acquire()
-                    //释放
                     wl.release()
                 }
-                INS?.finish()
+                finish()
             }
         }
 
@@ -90,6 +87,9 @@ class MessageHintActivity : AppCompatActivity() {
                             WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
             )
         }
+        val uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        window.decorView.systemUiVisibility = uiOptions
     }
 
     private val screenOnAction by lazy {

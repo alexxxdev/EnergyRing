@@ -295,7 +295,7 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
                 saveConfig(it, it.name)
             }
         }.onFailure {
-            Toast.makeText(this@MainActivity, it.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, it.message ?: "导入失败", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -47,6 +47,7 @@ object ScreenListener : BroadcastReceiver() {
                 screenOn = false
                 FloatRingWindow.hide()
                 if (MessageHintActivity.isShowing) {
+                    Log.d("Debug :", "onReceive  ----> 电源键亮屏")
                     MessageHintActivity.stopAndScreenOn()
                 }
             }
