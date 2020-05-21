@@ -94,7 +94,14 @@
 -keepclassmembers class **.R$* {
     *;
 }
-
+# 移除android 所有log
+-assumenosideeffects class android.util.Log{
+    public static *** v(...);
+    public static *** i(...);
+    public static *** d(...);
+    public static *** w(...);
+    public static *** e(...);
+}
 # 对于带有回调函数onXXEvent的，不能混淆
 -keepclassmembers class * {
     void *(**On*Event);

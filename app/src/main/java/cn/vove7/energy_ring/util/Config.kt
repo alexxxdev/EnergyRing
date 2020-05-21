@@ -3,7 +3,7 @@ package cn.vove7.energy_ring.util
 import cn.vove7.energy_ring.model.ShapeType
 import cn.vove7.smartkey.AConfig
 import cn.vove7.smartkey.key.smartKey
-import cn.vove7.smartkey.key.smartKeyList
+import cn.vove7.smartkey.key.smartKeySet
 import com.google.gson.annotations.SerializedName
 import cn.vove7.smartkey.annotation.Config as SC
 
@@ -115,7 +115,7 @@ object Config : AConfig() {
 
     var localConfig by smartKey(arrayOf<ConfigInfo>())
 
-    var notifyApps by smartKeyList(listOf(
+    var notifyApps by smartKeySet(setOf(
             "com.tencent.mobileqq",
             "com.tencent.mm",
             "com.alibaba.android.rimet"

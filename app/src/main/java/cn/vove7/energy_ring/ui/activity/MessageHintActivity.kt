@@ -45,6 +45,12 @@ class MessageHintActivity : AppCompatActivity() {
             //释放
             wl.release()
         }
+
+        fun cancel() {
+            INS?.apply {
+                finish()
+            }
+        }
     }
 
     val ledColor: Int by lazy {
