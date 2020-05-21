@@ -16,6 +16,8 @@ import cn.vove7.smartkey.annotation.Config as SC
 @SC("app")
 object Config : AConfig() {
 
+    val doNotDisturbRange by smartKey(0..6)
+
     var energyType by smartKey(ShapeType.RING)
 
     val autoRotateDisCharging get() = defaultRotateDuration != 180000
@@ -127,7 +129,8 @@ object Config : AConfig() {
             "com.immomo.momo",
             "cn.soulapp.android",
             "im.yixin",
-            "com.hpbr.bosszhipin"
+            "com.hpbr.bosszhipin",
+            "com.eg.android.AlipayGphone"
     ))
 
 }

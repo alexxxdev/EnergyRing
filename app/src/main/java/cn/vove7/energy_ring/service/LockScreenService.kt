@@ -12,7 +12,9 @@ import android.view.accessibility.AccessibilityEvent
  */
 class LockScreenService : AccessibilityService() {
     companion object {
-        val actived get() = INS != null
+        val isConnected
+            get() = Build.VERSION.SDK_INT < Build.VERSION_CODES.P
+                    || INS != null
 
         var INS: AccessibilityService? = null
 

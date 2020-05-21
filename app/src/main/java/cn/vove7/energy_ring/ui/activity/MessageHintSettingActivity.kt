@@ -36,7 +36,7 @@ class MessageHintSettingActivity : BaseActivity() {
             } else if (!NotificationListener.isConnect) {
                 checkOpen = true
                 openNotificationService()
-            } else if (!LockScreenService.actived) {
+            } else if (!LockScreenService.isConnected) {
                 checkOpen = true
                 goAccessibilityService()
             } else {
@@ -98,7 +98,7 @@ class MessageHintSettingActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         if (checkOpen) {
-            if (NotificationListener.isConnect && LockScreenService.actived) {
+            if (NotificationListener.isConnect && LockScreenService.isConnected) {
                 NotificationListener.resume()
                 checkOpen = false
             }

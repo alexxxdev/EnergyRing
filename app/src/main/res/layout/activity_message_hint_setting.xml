@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text="当有新通知时，呼吸灯闪烁时，双击亮屏。\n双击亮屏时人脸解锁可能无法使用。\n未经测试，耗电情况未知。" />
+        android:text="当在熄屏有新通知时，5秒后呼吸灯闪烁\n双击亮屏\n勿扰时段：00:00-07:00\n双击亮屏时人脸解锁可能无法使用\n暂时仅支持主流聊天软件" />
 
     <TextView
         android:id="@+id/service_status_button"

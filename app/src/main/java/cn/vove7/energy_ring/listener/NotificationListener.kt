@@ -37,7 +37,7 @@ class NotificationListener : NotificationListenerService() {
 
         val isConnect get() = INS != null
 
-        val isOpen get() = INS != null && Config.notificationListenerEnabled && LockScreenService.actived
+        val isOpen get() = INS != null && Config.notificationListenerEnabled && LockScreenService.isConnected
 
         fun stop() {
             Config.notificationListenerEnabled = false
@@ -56,7 +56,7 @@ class NotificationListener : NotificationListenerService() {
         Log.d("Debug :", "onNotificationRemoved  ----> $sbn")
         if (checkCurrentNs() == null) {
             if (MessageHintActivity.isShowing) {
-                MessageHintActivity.cancel()
+                MessageHintActivity.exit()
             }
         }
     }
@@ -79,7 +79,7 @@ class NotificationListener : NotificationListenerService() {
         }
         val time = Calendar.getInstance()
         val hour = time.get(Calendar.HOUR_OF_DAY)
-        if (hour in 2..6) {
+        if (hour in Config.doNotDisturbRange) {
             Log.d("Debug :", "checkNeeded  ----> 勿扰时间段 $hour")
             return null
         }
@@ -120,7 +120,7 @@ class NotificationListener : NotificationListenerService() {
     override fun onListenerConnected() {
         Log.d("Debug :", "onListenerConnected  ----> ")
         INS = this
-        if (!LockScreenService.actived) {
+        if (!LockScreenService.isConnected) {
             goAccessibilityService()
         }
     }

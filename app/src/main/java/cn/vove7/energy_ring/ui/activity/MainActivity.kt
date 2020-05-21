@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.ActionMenuView
 import android.widget.ImageView
 import android.widget.Toast
+import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.BuildConfig
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
@@ -73,7 +74,7 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
             if (Config.notificationListenerEnabled) {
                 if (!NotificationListener.isConnect) {
                     openNotificationService()
-                } else if (!LockScreenService.actived) {
+                } else if (!LockScreenService.isConnected) {
                     goAccessibilityService()
                 }
             }
@@ -295,7 +296,7 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
                 saveConfig(it, it.name)
             }
         }.onFailure {
-            Toast.makeText(this@MainActivity, it.message ?: "导入失败", Toast.LENGTH_SHORT).show()
+            App.toast(it.message ?: "导入失败")
         }
     }
 

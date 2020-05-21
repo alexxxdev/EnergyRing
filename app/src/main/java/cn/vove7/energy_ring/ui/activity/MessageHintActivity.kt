@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.os.SystemClock
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -20,6 +19,7 @@ import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.service.LockScreenService
 import cn.vove7.energy_ring.util.Config
 import kotlinx.android.synthetic.main.activity_message_hint.*
+import java.util.*
 
 
 /**
@@ -37,20 +37,20 @@ class MessageHintActivity : AppCompatActivity() {
         @SuppressLint("InvalidWakeLockTag", "WakelockTimeout")
         fun stopAndScreenOn() {
             INS?.apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    App.keyguardManager.requestDismissKeyguard(this, null)
-                } else {
-                    val wl = App.powerManager.newWakeLock(
-                            PowerManager.ACQUIRE_CAUSES_WAKEUP or
-                                    PowerManager.SCREEN_DIM_WAKE_LOCK, "cn.vove7.energy_ring.bright")
-                    wl.acquire()
-                    wl.release()
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                    App.keyguardManager.requestDismissKeyguard(this, null)
+//                } else {
+                val wl = App.powerManager.newWakeLock(
+                        PowerManager.ACQUIRE_CAUSES_WAKEUP or
+                                PowerManager.SCREEN_DIM_WAKE_LOCK, "cn.vove7.energy_ring.bright")
+                wl.acquire()
+                wl.release()
+//                }
                 finish()
             }
         }
 
-        fun cancel() {
+        fun exit() {
             INS?.apply {
                 finish()
                 LockScreenService.screenOff()
@@ -96,6 +96,23 @@ class MessageHintActivity : AppCompatActivity() {
         intent?.hasExtra("finish") == true
     }
 
+    private val checkTimer by lazy {
+        Timer()
+    }
+
+    private val task by lazy {
+        object : TimerTask() {
+            override fun run() {
+                val time = Calendar.getInstance()
+                val hour = time.get(Calendar.HOUR_OF_DAY)
+                if (hour in Config.doNotDisturbRange) {
+                    Log.d("Debug :", "checkNeeded  ----> 进入勿扰时间段 $hour")
+                    exit()
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFlags()
@@ -104,6 +121,7 @@ class MessageHintActivity : AppCompatActivity() {
             finish()
             return
         }
+        checkTimer.schedule(task, 10 * 60 * 1000)
         setContentView(R.layout.activity_message_hint)
         val cv = findViewById<View>(android.R.id.content)
 
@@ -143,20 +161,14 @@ class MessageHintActivity : AppCompatActivity() {
         })
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode != 134) {
-            Log.d("Debug :", "onKeyDown  ----> ${keyCode}")
-        }
-        return super.onKeyDown(keyCode, event)
-    }
-
     override fun onDestroy() {
         energyStyle.displayView.animation?.cancel()
+        checkTimer.cancel()
         super.onDestroy()
         INS = null
     }
 
     override fun onBackPressed() {
-//        super.onBackPressed()
+        App.toast(R.string.double_click_to_exit)
     }
 }
