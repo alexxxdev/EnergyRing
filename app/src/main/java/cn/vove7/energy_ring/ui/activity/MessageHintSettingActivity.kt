@@ -1,14 +1,15 @@
 package cn.vove7.energy_ring.ui.activity
 
-import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.widget.Toast
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.NotificationListener
+import cn.vove7.energy_ring.service.LockScreenService
 import cn.vove7.energy_ring.util.Config
+import cn.vove7.energy_ring.util.goAccessibilityService
+import cn.vove7.energy_ring.util.openNotificationService
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
@@ -23,6 +24,7 @@ import kotlin.math.ceil
  */
 class MessageHintSettingActivity : BaseActivity() {
 
+    var checkOpen = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message_hint_setting)
@@ -32,7 +34,11 @@ class MessageHintSettingActivity : BaseActivity() {
                 NotificationListener.stop()
                 refreshStatusButton()
             } else if (!NotificationListener.isConnect) {
-                go2OpenService()
+                checkOpen = true
+                openNotificationService()
+            } else if (!LockScreenService.actived) {
+                checkOpen = true
+                goAccessibilityService()
             } else {
                 NotificationListener.resume()
                 refreshStatusButton()
@@ -44,6 +50,7 @@ class MessageHintSettingActivity : BaseActivity() {
         }
         showTips()
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -63,6 +70,7 @@ class MessageHintSettingActivity : BaseActivity() {
             message(text = """
                 |熄屏闪光提醒。
                 
+                |需要通知权限和无障碍
                 |呼吸灯闪烁时，双击亮屏。
                 |双击亮屏时人脸解锁可能无法使用。
                 """.trimMargin())
@@ -89,26 +97,18 @@ class MessageHintSettingActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (checkOpen) {
+            if (NotificationListener.isConnect && LockScreenService.actived) {
+                NotificationListener.resume()
+                checkOpen = false
+            }
+        }
         refreshStatusButton()
     }
 
     private fun refreshStatusButton() {
         service_status_button.isSelected = NotificationListener.isOpen
         service_status_button.text = if (service_status_button.isSelected) "停止服务" else "开启服务"
-    }
-
-    private fun go2OpenService() {
-        try {
-            val intent = Intent()
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            val cn = ComponentName("com.android.settings", "com.android.settings.Settings\$NotificationAccessSettingsActivity")
-            intent.component = cn
-            intent.putExtra(":settings:show_fragment", "NotificationAccessSettings")
-            startActivity(intent)
-        } catch (ex: Exception) {
-            Toast.makeText(this, "跳转失败，请手动进入设置开启通知权限", Toast.LENGTH_SHORT).show()
-            ex.printStackTrace()
-        }
     }
 
 //    fun getAllApps() = thread {

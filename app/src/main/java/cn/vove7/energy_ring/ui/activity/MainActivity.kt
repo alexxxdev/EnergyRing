@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import android.widget.ActionMenuView
@@ -13,12 +14,12 @@ import android.widget.Toast
 import cn.vove7.energy_ring.BuildConfig
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
+import cn.vove7.energy_ring.listener.NotificationListener
 import cn.vove7.energy_ring.listener.RotationListener
 import cn.vove7.energy_ring.model.ShapeType
+import cn.vove7.energy_ring.service.LockScreenService
 import cn.vove7.energy_ring.ui.adapter.StylePagerAdapter
-import cn.vove7.energy_ring.util.Config
-import cn.vove7.energy_ring.util.ConfigInfo
-import cn.vove7.energy_ring.util.DonateHelper
+import cn.vove7.energy_ring.util.*
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
@@ -62,6 +63,21 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
         menu_view.menu.findItem(R.id.rotate_auto_hide).isChecked = Config.autoHideRotate
         menu_view.menu.findItem(R.id.fullscreen_auto_hide).isChecked = Config.autoHideFullscreen
         refreshMenu()
+        checkNotificationService()
+    }
+
+    private fun checkNotificationService() {
+        Handler().postDelayed({
+            if (isFinishing) return@postDelayed
+
+            if (Config.notificationListenerEnabled) {
+                if (!NotificationListener.isConnect) {
+                    openNotificationService()
+                } else if (!LockScreenService.actived) {
+                    goAccessibilityService()
+                }
+            }
+        }, 3000)
     }
 
     private fun initRadioStylesView() {

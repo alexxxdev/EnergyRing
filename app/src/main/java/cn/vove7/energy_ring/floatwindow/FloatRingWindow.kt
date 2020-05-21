@@ -1,8 +1,6 @@
 package cn.vove7.energy_ring.floatwindow
 
-import android.content.Intent
 import android.graphics.PixelFormat
-import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -13,9 +11,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
-import android.widget.Toast
 import cn.vove7.energy_ring.App
-import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.energystyle.DoubleRingStyle
 import cn.vove7.energy_ring.energystyle.EnergyStyle
 import cn.vove7.energy_ring.energystyle.PillStyle
@@ -24,6 +20,7 @@ import cn.vove7.energy_ring.listener.RotationListener
 import cn.vove7.energy_ring.model.ShapeType
 import cn.vove7.energy_ring.util.Config
 import cn.vove7.energy_ring.util.batteryLevel
+import cn.vove7.energy_ring.util.openFloatPermission
 import cn.vove7.energy_ring.util.weakLazy
 import java.lang.Thread.sleep
 import kotlin.concurrent.thread
@@ -58,10 +55,7 @@ object FloatRingWindow {
         if (hasPermission) {
             showInternal()
         } else {
-            Toast.makeText(App.INS, R.string.request_float_window_permission, Toast.LENGTH_SHORT).show()
-            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + App.INS.packageName))
-            App.INS.startActivity(intent)
+            openFloatPermission()
             thread {
                 while (!hasPermission) {
                     Log.d("Debug :", "wait p...")

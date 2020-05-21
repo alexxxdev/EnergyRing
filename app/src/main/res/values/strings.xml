@@ -61,6 +61,11 @@
     <string name="flash_light_on_screen_off">熄屏闪光提醒[实验]</string>
     <string name="hint_color_pick_dialog">左滑可自定义颜色及透明度</string>
     <string name="open_link">打开链接</string>
+    <string name="label_lock_screen_service">Energy Ring 熄屏服务</string>
+    <string name="desc_lock_screen_service">用于控制熄屏消息移除时，关闭屏幕</string>
+    <string name="please_open_accessibility_service">请开启熄屏无障碍服务</string>
+    <string name="please_open_notification_service">请开启通知服务</string>
+    <string name="jump_failed_please_open_notification_service_by_manual">跳转失败，请手动进入设置开启通知权限</string>
     <array name="way_of_support">
         <item>支付宝</item>
         <item>微信</item>

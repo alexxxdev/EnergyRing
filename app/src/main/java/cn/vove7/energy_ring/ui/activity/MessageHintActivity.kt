@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
+import cn.vove7.energy_ring.service.LockScreenService
 import cn.vove7.energy_ring.util.Config
 import kotlinx.android.synthetic.main.activity_message_hint.*
 
@@ -49,6 +50,7 @@ class MessageHintActivity : AppCompatActivity() {
         fun cancel() {
             INS?.apply {
                 finish()
+                LockScreenService.screenOff()
             }
         }
     }
