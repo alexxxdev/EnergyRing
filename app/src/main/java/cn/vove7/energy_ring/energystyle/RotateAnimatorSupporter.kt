@@ -40,7 +40,6 @@ abstract class RotateAnimatorSupporter : EnergyStyle {
             duration = dur.toLong()
             addUpdateListener {
                 lastRotation = it.animatedValue as Float
-                Log.v(TAG, "rotate update  ----> $lastRotation")
                 FloatRingWindow.checkValid() ?: return@addUpdateListener
                 onAnimatorUpdate(lastRotation)
             }
