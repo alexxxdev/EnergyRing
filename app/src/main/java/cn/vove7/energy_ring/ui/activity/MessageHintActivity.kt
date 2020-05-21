@@ -36,15 +36,21 @@ class MessageHintActivity : AppCompatActivity() {
         //电源键 亮屏实现
         @SuppressLint("InvalidWakeLockTag", "WakelockTimeout")
         fun stopAndScreenOn() {
-            INS?.finish()
-            //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
-            val wl = App.powerManager.newWakeLock(
-                    PowerManager.ACQUIRE_CAUSES_WAKEUP or
-                            PowerManager.SCREEN_DIM_WAKE_LOCK, "cn.vove7.energy_ring.bright")
-            //点亮屏幕
-            wl.acquire()
-            //释放
-            wl.release()
+            INS?.apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    App.keyguardManager.requestDismissKeyguard(this, null)
+                } else {
+                    //获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
+                    val wl = App.powerManager.newWakeLock(
+                            PowerManager.ACQUIRE_CAUSES_WAKEUP or
+                                    PowerManager.SCREEN_DIM_WAKE_LOCK, "cn.vove7.energy_ring.bright")
+                    //点亮屏幕
+                    wl.acquire()
+                    //释放
+                    wl.release()
+                }
+                INS?.finish()
+            }
         }
 
         fun cancel() {
@@ -55,7 +61,7 @@ class MessageHintActivity : AppCompatActivity() {
         }
     }
 
-    val ledColor: Int by lazy {
+    private val ledColor: Int by lazy {
         intent?.getIntExtra("color", Color.GREEN) ?: Color.GREEN
     }
 
@@ -105,7 +111,7 @@ class MessageHintActivity : AppCompatActivity() {
         cv.setOnClickListener {
             val now = SystemClock.elapsedRealtime()
             if (now - lastClick < 200) {
-                finish()
+                stopAndScreenOn()
             }
             lastClick = now
         }
@@ -150,4 +156,7 @@ class MessageHintActivity : AppCompatActivity() {
         INS = null
     }
 
+    override fun onBackPressed() {
+//        super.onBackPressed()
+    }
 }
