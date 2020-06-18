@@ -226,7 +226,7 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
                 applyConfig(ds[i])
             }
             checkBoxPrompt(R.string.display_only_this_model, isCheckedDefault = ds.size != allDs.size) { c ->
-                val dss = if (c) allDs.filter { it.model == Build.MODEL }
+                val dss = if (c) allDs.filter { it.model.equals(Build.MODEL,ignoreCase = true)  }
                 else allDs
                 listItems(items = dss.map { it.name }, waitForPositiveButton = false) { _, i, _ ->
                     applyConfig(dss[i])

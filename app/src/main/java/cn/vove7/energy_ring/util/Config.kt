@@ -110,7 +110,15 @@ object Config : AConfig() {
                 ConfigInfo("华为MatePad Pro", "MRX-AL09", 1894, 0, 12f * 2, 0.05625f),
                 ConfigInfo("OPPO Ace2", "PDHM00", 117, 28, 5f * 2, 0.06851852f),
                 ConfigInfo("OPPO Find X2 Pro", "PDEM30", 148, 22, 8f * 2, 0.06736f),
-                ConfigInfo("OPPO Reno", "PCAT00", 1887, 46, 6f * 2, 0.028703704f)
+
+                ConfigInfo("OPPO Reno", "PCAT00", 1887, 46, 6f * 2, 0.028703704f),
+                ConfigInfo("荣耀30S", "CDY-AN90", 62, 19, 23f, 0.08472222f, ShapeType.RING),
+                ConfigInfo("红米K30", "Readmi K30", 1567, 20, 14f, 0.07037037f, ShapeType.PILL, spacingWidth = 58),
+                ConfigInfo("红米K30 5G", "Readmi K30 5G", 1577, 22, 9f, 0.06481481f, ShapeType.DOUBLE_RING, spacingWidth = 220),
+                ConfigInfo("Vivo IQOO Z1", "V1986A", 1740, 21, 21f, 0.085185185f, ShapeType.RING),
+                ConfigInfo("Huawei P40 Pro", "ELS-AN00", 120, 17, 21f, 0.1125f, ShapeType.PILL, spacingWidth = 336),
+                ConfigInfo("Huawei V30 Pro", "OXF-AN10", 72, 27, 13f, 0.08796296f, ShapeType.PILL, spacingWidth = 252)
+
         )
     }
     val presetDevices by devicesWeakLazy
