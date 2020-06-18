@@ -18,9 +18,11 @@ import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.NotificationListener
 import cn.vove7.energy_ring.listener.RotationListener
 import cn.vove7.energy_ring.model.ShapeType
-import cn.vove7.energy_ring.service.LockScreenService
 import cn.vove7.energy_ring.ui.adapter.StylePagerAdapter
-import cn.vove7.energy_ring.util.*
+import cn.vove7.energy_ring.util.Config
+import cn.vove7.energy_ring.util.ConfigInfo
+import cn.vove7.energy_ring.util.DonateHelper
+import cn.vove7.energy_ring.util.openNotificationService
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
@@ -71,12 +73,8 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
         Handler().postDelayed({
             if (isFinishing) return@postDelayed
 
-            if (Config.notificationListenerEnabled) {
-                if (!NotificationListener.isConnect) {
-                    openNotificationService()
-                } else if (!LockScreenService.isConnected) {
-                    goAccessibilityService()
-                }
+            if (Config.notificationListenerEnabled && !NotificationListener.isConnect) {
+                openNotificationService()
             }
         }, 3000)
     }
@@ -226,7 +224,7 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
                 applyConfig(ds[i])
             }
             checkBoxPrompt(R.string.display_only_this_model, isCheckedDefault = ds.size != allDs.size) { c ->
-                val dss = if (c) allDs.filter { it.model.equals(Build.MODEL,ignoreCase = true)  }
+                val dss = if (c) allDs.filter { it.model.equals(Build.MODEL, ignoreCase = true) }
                 else allDs
                 listItems(items = dss.map { it.name }, waitForPositiveButton = false) { _, i, _ ->
                     applyConfig(dss[i])

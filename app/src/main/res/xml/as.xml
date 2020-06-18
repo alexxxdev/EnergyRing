@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-    android:packageNames="c.c.c.c"
-    android:notificationTimeout="100"
-    android:settingsActivity=".ui.activity.MessageHintSettingActivity"
-    android:description="@string/desc_lock_screen_service">
-
-</accessibility-service>

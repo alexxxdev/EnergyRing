@@ -10,7 +10,6 @@ import android.widget.Toast
 import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.listener.NotificationListener
-import cn.vove7.energy_ring.service.LockScreenService
 
 
 /**
@@ -48,16 +47,4 @@ private fun Intent.putComponent(cls: Class<*>) {
     bundle.putString(":settings:fragment_args_key", cs)
     putExtra(":settings:fragment_args_key", cs)
     putExtra(":settings:show_fragment_args", bundle)
-}
-
-fun Context.goAccessibilityService() {
-    App.toast(R.string.please_open_accessibility_service)
-    try {
-        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putComponent(LockScreenService::class.java)
-        startActivity(intent)
-    } catch (e: Throwable) {
-        App.toast(e.message ?: "跳转失败，未知错误")
-    }
 }

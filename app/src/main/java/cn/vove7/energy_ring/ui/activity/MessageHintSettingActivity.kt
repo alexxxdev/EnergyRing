@@ -6,9 +6,7 @@ import android.os.CountDownTimer
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.NotificationListener
-import cn.vove7.energy_ring.service.LockScreenService
 import cn.vove7.energy_ring.util.Config
-import cn.vove7.energy_ring.util.goAccessibilityService
 import cn.vove7.energy_ring.util.openNotificationService
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
@@ -24,7 +22,8 @@ import kotlin.math.ceil
  */
 class MessageHintSettingActivity : BaseActivity() {
 
-    var checkOpen = false
+    private var checkOpen = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message_hint_setting)
@@ -36,9 +35,6 @@ class MessageHintSettingActivity : BaseActivity() {
             } else if (!NotificationListener.isConnect) {
                 checkOpen = true
                 openNotificationService()
-            } else if (!LockScreenService.isConnected) {
-                checkOpen = true
-                goAccessibilityService()
             } else {
                 NotificationListener.resume()
                 refreshStatusButton()
@@ -98,7 +94,7 @@ class MessageHintSettingActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         if (checkOpen) {
-            if (NotificationListener.isConnect && LockScreenService.isConnected) {
+            if (NotificationListener.isConnect) {
                 NotificationListener.resume()
                 checkOpen = false
             }

@@ -15,13 +15,10 @@ import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.annotation.RequiresApi
 import cn.vove7.energy_ring.App
-import cn.vove7.energy_ring.service.LockScreenService
 import cn.vove7.energy_ring.ui.activity.MessageHintActivity
 import cn.vove7.energy_ring.util.Config
-import cn.vove7.energy_ring.util.goAccessibilityService
 import cn.vove7.energy_ring.util.weakLazy
 import java.util.*
-import kotlin.concurrent.thread
 
 /**
  * # NotificationListener
@@ -43,7 +40,7 @@ class NotificationListener : NotificationListenerService() {
 
         val isConnect get() = INS != null
 
-        val isOpen get() = INS != null && Config.notificationListenerEnabled && LockScreenService.isConnected
+        val isOpen get() = INS != null && Config.notificationListenerEnabled
 
         fun stop() {
             Config.notificationListenerEnabled = false
@@ -126,9 +123,6 @@ class NotificationListener : NotificationListenerService() {
     override fun onListenerConnected() {
         Log.d("Debug :", "onListenerConnected  ----> ")
         INS = this
-        if (!LockScreenService.isConnected) {
-            goAccessibilityService()
-        }
     }
 
     override fun onListenerDisconnected() {
