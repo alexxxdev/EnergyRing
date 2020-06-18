@@ -2,8 +2,13 @@ package cn.vove7.energy_ring.listener
 
 import android.app.Notification
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Build
 import android.os.Handler
+import android.os.HandlerThread
 import android.os.Looper
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -16,6 +21,7 @@ import cn.vove7.energy_ring.util.Config
 import cn.vove7.energy_ring.util.goAccessibilityService
 import cn.vove7.energy_ring.util.weakLazy
 import java.util.*
+import kotlin.concurrent.thread
 
 /**
  * # NotificationListener
@@ -137,10 +143,51 @@ class NotificationListener : NotificationListenerService() {
 
     private fun showHint() {
         checkNeeded() ?: return
-
+        if (isNear()) {
+            Log.d("Debug :", "贴近不显示")
+            return
+        }
         Log.d("Debug :", "showHint  ----> 屏幕关闭 -> 通知")
         startActivity(Intent(this, MessageHintActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         })
     }
+
+    private fun isNear(): Boolean {
+        val sm = App.INS.getSystemService(SensorManager::class.java)
+        val sensor = sm?.getDefaultSensor(Sensor.TYPE_PROXIMITY) ?: return false
+        var isNear = false
+        val lock = Object()
+
+        val newLooper = HandlerThread("sensor-lis").run {
+            start()
+            looper
+        }
+        val newHandler = Handler(newLooper)
+        val lis = object : SensorEventListener {
+            override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+            override fun onSensorChanged(event: SensorEvent?) {
+                event ?: return
+                Log.d("Debug :", "onSensorChanged  ----> ${event.values?.contentToString()}")
+
+                isNear = try {
+                    event.values[0] == 0.0f
+                } catch (e: Throwable) {
+                    false
+                }
+                sm.unregisterListener(this)
+                synchronized(lock) {
+                    lock.notify()
+                }
+            }
+        }
+        sm.registerListener(lis, sensor, SensorManager.SENSOR_DELAY_FASTEST, newHandler)
+        synchronized(lock) {
+            lock.wait()
+        }
+        newLooper.quitSafely()
+        Log.d("Debug :", "isNear  ----> $isNear")
+        return isNear
+    }
+
 }
