@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
    # 代码混淆压缩比，在0和7之间，默认为5，一般不需要改
--optimizationpasses 5
+-optimizationpasses 7
 
 # 混淆时不使用大小写混合，混淆后的类名为小写
 -dontusemixedcaseclassnames
@@ -66,13 +66,13 @@
 }
 
 # 保留自定义控件(继承自View)不能被混淆
--keep public class * extends android.view.View {
-    public <init>(android.content.Context);
-    public <init>(android.content.Context, android.util.AttributeSet);
-    public <init>(android.content.Context, android.util.AttributeSet, int);
-    public void set*(***);
-    *** get* ();
-}
+#-keep public class * extends android.view.View {
+#    public <init>(android.content.Context);
+#    public <init>(android.content.Context, android.util.AttributeSet);
+#    public <init>(android.content.Context, android.util.AttributeSet, int);
+#    public void set*(***);
+#    *** get* ();
+#}
 
 # 保留Parcelable序列化的类不能被混淆
 -keep class * implements android.os.Parcelable{
@@ -170,10 +170,6 @@
 }
 
 -keep class **$Properties {*;}
-
--keep class tv.danmaku.ijk.media.player.** {*; }
--dontwarn tv.danmaku.ijk.media.player.*
--keep interface tv.danmaku.ijk.media.player.** { *; }
 
 # ProGuard configurations for Bugtags
 -keepattributes LineNumberTable,SourceFile
