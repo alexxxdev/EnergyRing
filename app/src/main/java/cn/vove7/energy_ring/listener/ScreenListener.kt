@@ -39,13 +39,13 @@ object ScreenListener : BroadcastReceiver() {
                 screenOn = true
                 FloatRingWindow.onShapeTypeChanged()
                 Log.d("Debug :", "onReceive  ----> 亮屏")
-                FloatRingWindow.show()
+                FloatRingWindow.resumeAnimator()
             }
             Intent.ACTION_SCREEN_OFF -> {
                 Log.d("Debug :", "onReceive  ----> 关屏")
                 screenLocked = true
                 screenOn = false
-                FloatRingWindow.hide()
+                FloatRingWindow.pauseAnimator()
                 if (MessageHintActivity.isShowing) {
                     Log.d("Debug :", "onReceive  ----> 电源键亮屏")
                     MessageHintActivity.stopAndScreenOn()

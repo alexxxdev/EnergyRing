@@ -15,5 +15,7 @@ interface EnergyStyle {
 
     fun onHide()
 
+    fun pauseAnimator()
+
     fun setColor(color: Int) {}
 }

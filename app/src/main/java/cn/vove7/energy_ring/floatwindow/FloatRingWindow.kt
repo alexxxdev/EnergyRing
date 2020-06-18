@@ -174,6 +174,13 @@ object FloatRingWindow {
         displayEnergyStyle.onHide()
     }
 
+    fun pauseAnimator() {
+        displayEnergyStyle.pauseAnimator()
+    }
+    fun resumeAnimator() {
+        displayEnergyStyle.resumeAnimator()
+    }
+
     fun canShow(): Boolean {
         if (!hasPermission || isShowing) {
             return false

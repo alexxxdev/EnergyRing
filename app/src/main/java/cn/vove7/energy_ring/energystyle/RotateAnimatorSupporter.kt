@@ -84,6 +84,11 @@ abstract class RotateAnimatorSupporter : EnergyStyle {
     @CallSuper
     override fun onHide() {
         Log.d(TAG, "onHide  ----> $TAG")
+        pauseAnimator()
+    }
+
+    override fun pauseAnimator() {
+        Log.d(TAG, "pauseAnimator  ----> $TAG")
         rotateAnimator?.pause()
     }
 
