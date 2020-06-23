@@ -108,7 +108,7 @@ class NotificationListener : NotificationListenerService() {
 
         kotlin.runCatching {
             if (sbn.packageName in Config.notifyApps) {
-                Log.w("Debug :", "闪光通知  ----> ${sbn.packageName}")
+                Log.w("Debug :", "熄屏通知  ----> ${sbn.packageName}")
                 handler.postDelayed(showHintRunnable, 6000)
             } else {
                 Log.w("Debug :", "不通知  ----> ${sbn.packageName} ")

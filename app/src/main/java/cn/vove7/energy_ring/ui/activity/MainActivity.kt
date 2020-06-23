@@ -63,6 +63,7 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
 
         menuInflater.inflate(R.menu.main, menu_view.menu)
         menu_view.setOnMenuItemClickListener(this)
+        menu_view.overflowIcon = getDrawable(R.drawable.ic_settings)
         menu_view.menu.findItem(R.id.rotate_auto_hide).isChecked = Config.autoHideRotate
         menu_view.menu.findItem(R.id.fullscreen_auto_hide).isChecked = Config.autoHideFullscreen
         refreshMenu()
@@ -306,7 +307,7 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
                     |- 全屏自动隐藏（跟随状态栏）
                     |- 横屏自动隐藏
                     |- 充电动画
-                    |- 熄屏闪光通知提醒
+                    |- 熄屏通知提醒
                     |- 不受分辨率影响(2k/1080p)
                     |
                     |某些时候会出现“冻结”情况，更改属性 圆环不会变化，可以在菜单强制刷新或切换形状。

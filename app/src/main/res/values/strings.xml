@@ -58,7 +58,7 @@
     <string name="setting_screen_off_remind">熄屏提醒设置</string>
     <string name="prompt">提示</string>
     <string name="preview">预览</string>
-    <string name="flash_light_on_screen_off">熄屏闪光提醒[实验]</string>
+    <string name="flash_light_on_screen_off">熄屏光环提醒[实验]</string>
     <string name="hint_color_pick_dialog">左滑可自定义颜色及透明度</string>
     <string name="open_link">打开链接</string>
     <string name="please_open_notification_service">请开启通知服务</string>

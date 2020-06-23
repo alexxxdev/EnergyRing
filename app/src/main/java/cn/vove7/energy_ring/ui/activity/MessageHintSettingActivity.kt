@@ -64,7 +64,7 @@ class MessageHintSettingActivity : BaseActivity() {
             cancelable(false)
             cancelOnTouchOutside(false)
             message(text = """
-                |熄屏闪光提醒。
+                |熄屏通知提醒。
                 
                 |需要通知权限和无障碍
                 |呼吸灯闪烁时，双击亮屏。
