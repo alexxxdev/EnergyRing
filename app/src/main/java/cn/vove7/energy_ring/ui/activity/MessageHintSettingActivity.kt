@@ -8,6 +8,7 @@ import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.NotificationListener
 import cn.vove7.energy_ring.util.Config
 import cn.vove7.energy_ring.util.openNotificationService
+import cn.vove7.smartkey.get
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton

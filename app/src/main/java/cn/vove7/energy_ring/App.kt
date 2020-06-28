@@ -17,6 +17,7 @@ import cn.vove7.energy_ring.listener.RotationListener
 import cn.vove7.energy_ring.listener.ScreenListener
 import cn.vove7.energy_ring.util.Config
 import cn.vove7.smartkey.android.AndroidSettings
+import cn.vove7.smartkey.get
 import kotlin.concurrent.thread
 
 /**
@@ -80,6 +81,18 @@ class App : Application() {
 
     private fun onFirstLaunch() = thread {
         initSmsApp2NotifyApps()
+        initPhone2NotifyApps()
+    }
+
+    private fun initPhone2NotifyApps() {
+        val i = Intent(Intent.ACTION_CALL, Uri.parse("tel:123"))
+        val ri = packageManager.resolveActivity(i, PackageManager.MATCH_DEFAULT_ONLY)
+
+        Log.d("Debug :", "sms  ----> $ri")
+        ri?.activityInfo?.packageName?.also { smsPkg ->
+            Log.d("Debug :", "拨号应用  ----> $smsPkg")
+            Config.notifyApps.add(smsPkg)
+        }
     }
 
     private fun initSmsApp2NotifyApps() {
@@ -89,14 +102,14 @@ class App : Application() {
         Log.d("Debug :", "sms  ----> $ri")
         ri?.activityInfo?.packageName?.also { smsPkg ->
             Log.d("Debug :", "短信应用  ----> $smsPkg")
-            Config.notifyApps = Config.notifyApps.toMutableSet().also {
-                it.add(smsPkg)
-            }
+            Config.notifyApps.add(smsPkg)
         }
     }
 
     private fun onNewVersion(lastVersion: Int, newVersion: Int) {
-
+        if (lastVersion <= 20401 && newVersion >= 20402) {
+            thread { initPhone2NotifyApps() }
+        }
     }
 
     override fun startActivity(intent: Intent?) {
