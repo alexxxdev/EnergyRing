@@ -134,7 +134,7 @@ class MessageHintActivity : AppCompatActivity() {
         cv.fitsSystemWindows = false
         rootView.fitsSystemWindows = false
         applyRingViewStyle()
-//        startAnimator()
+        startAnimator()
         INS = this
     }
 
