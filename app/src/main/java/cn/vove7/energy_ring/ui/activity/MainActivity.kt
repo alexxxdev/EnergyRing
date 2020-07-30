@@ -311,6 +311,7 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
                     |- 不受分辨率影响(2k/1080p)
                     |
                     |某些时候会出现“冻结”情况，更改属性 圆环不会变化，可以在菜单强制刷新或切换形状。
+                    |【此应用完全免费】
                     |""".trimMargin())
             negativeButton(R.string.author) {
                 try {
