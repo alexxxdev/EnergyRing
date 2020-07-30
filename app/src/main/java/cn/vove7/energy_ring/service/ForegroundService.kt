@@ -1,4 +1,4 @@
-package cn.vove7.energy_ring
+package cn.vove7.energy_ring.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import cn.vove7.energy_ring.R
 
 /**
  * # ForegroundService
@@ -16,8 +17,8 @@ import androidx.core.app.NotificationCompat
  */
 class ForegroundService : Service() {
 
-
     override fun onBind(intent: Intent?): IBinder? = null
+
     override fun onCreate() {
         super.onCreate()
         startForeground(1000, foreNotification)

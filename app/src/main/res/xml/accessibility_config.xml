@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes=""
+    android:accessibilityFeedbackType=""
+    android:accessibilityFlags=""
+    android:description="@string/desc_acc"
+    android:summary="@string/desc_acc" />

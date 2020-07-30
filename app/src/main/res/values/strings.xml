@@ -55,6 +55,7 @@
     <string name="not_support_current_mode">暂不支持当前形状</string>
     <string name="force_refresh">强制刷新</string>
     <string name="label_notification_service">Energy Ring 通知服务</string>
+    <string name="desc_acc">开启后可不在通知栏显示悬浮窗通知</string>
     <string name="setting_screen_off_remind">熄屏提醒设置</string>
     <string name="prompt">提示</string>
     <string name="preview">预览</string>

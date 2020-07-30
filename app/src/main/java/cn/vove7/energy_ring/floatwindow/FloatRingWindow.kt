@@ -1,5 +1,6 @@
 package cn.vove7.energy_ring.floatwindow
 
+import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
@@ -18,6 +19,7 @@ import cn.vove7.energy_ring.energystyle.PillStyle
 import cn.vove7.energy_ring.energystyle.RingStyle
 import cn.vove7.energy_ring.listener.RotationListener
 import cn.vove7.energy_ring.model.ShapeType
+import cn.vove7.energy_ring.service.AccService
 import cn.vove7.energy_ring.util.Config
 import cn.vove7.energy_ring.util.batteryLevel
 import cn.vove7.energy_ring.util.openFloatPermission
@@ -49,7 +51,8 @@ object FloatRingWindow {
 
     private val displayEnergyStyle by displayEnergyStyleDelegate
 
-    private val wm: WindowManager = App.windowsManager
+    private val wm: WindowManager
+        get() = AccService.wm ?: App.windowsManager
 
     fun start() {
         if (hasPermission) {
@@ -74,17 +77,19 @@ object FloatRingWindow {
     var isShowing = false
     private val layoutParams: WindowManager.LayoutParams
         get() = WindowManager.LayoutParams(
-                -2, -2,
-                Config.posX, Config.posY,
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-                else WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
-                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
-                        WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR or
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                , 0
+            -2, -2,
+            Config.posX, Config.posY,
+            when {
+                AccService.hasOpend -> WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                else -> WindowManager.LayoutParams.TYPE_PHONE
+            },
+            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            , 0
         ).apply {
             format = PixelFormat.RGBA_8888
             gravity = Gravity.TOP or Gravity.START
@@ -127,6 +132,19 @@ object FloatRingWindow {
             reloadAnimation()
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    fun reload() {
+        if (isShowing) {
+            try {
+                bodyView.tag = false
+                isShowing = false
+                wm.removeViewImmediate(bodyView)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            show()
         }
     }
 
@@ -177,6 +195,7 @@ object FloatRingWindow {
     fun pauseAnimator() {
         displayEnergyStyle.pauseAnimator()
     }
+
     fun resumeAnimator() {
         displayEnergyStyle.resumeAnimator()
     }
