@@ -65,6 +65,11 @@
     <string name="please_open_notification_service">请开启通知服务</string>
     <string name="jump_failed_please_open_notification_service_by_manual">跳转失败，请手动进入设置开启通知权限</string>
     <string name="double_click_to_exit">双击退出</string>
+    <string name="do_not_disturb_time">勿扰时段</string>
+    <string name="do_not_disturb_time_s">勿扰时段：%s</string>
+    <string name="flash_ring_hint2">双击亮屏时人脸解锁可能无法使用\n暂时仅支持主流聊天软件</string>
+    <string name="flash_ring_hint1">当在熄屏有新通知时，5秒后呼吸灯闪烁\n双击亮屏</string>
+
     <array name="way_of_support">
         <item>支付宝</item>
         <item>微信</item>

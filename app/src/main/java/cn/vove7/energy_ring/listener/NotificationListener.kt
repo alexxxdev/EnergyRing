@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.ui.activity.MessageHintActivity
 import cn.vove7.energy_ring.util.Config
+import cn.vove7.energy_ring.util.inTimeRange
 import cn.vove7.energy_ring.util.weakLazy
 import java.util.*
 
@@ -82,7 +83,9 @@ class NotificationListener : NotificationListenerService() {
         }
         val time = Calendar.getInstance()
         val hour = time.get(Calendar.HOUR_OF_DAY)
-        if (hour in Config.doNotDisturbRange) {
+        val (begin, end) = Config.doNotDisturbRange
+
+        if (inTimeRange(hour, begin, end)) {
             Log.d("Debug :", "checkNeeded  ----> 勿扰时间段 $hour")
             return null
         }

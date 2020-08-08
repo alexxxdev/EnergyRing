@@ -12,6 +12,7 @@
 
         <item name="md_corner_radius">15dp</item>
         <item name="md_color_button_text">@color/colorAccent</item>
+        <item name="sliderStyle">@style/Widget.MaterialComponents.Slider</item>
     </style>
 
     <style name="BlackHole" parent="AppTheme">

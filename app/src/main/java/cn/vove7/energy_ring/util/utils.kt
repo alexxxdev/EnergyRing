@@ -165,3 +165,12 @@ fun <T> Iterable<T>.spliteBy(p: (T) -> Boolean): Pair<List<T>, List<T>> {
     }
     return a to b
 }
+
+
+fun inTimeRange(h: Int, b: Int, e: Int): Boolean {
+    return if (b > e) {
+        h in b..23 || h in 0 until e
+    } else {
+        h in b until e
+    }
+}

@@ -17,6 +17,7 @@ import cn.vove7.energy_ring.App
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.util.Config
+import cn.vove7.energy_ring.util.inTimeRange
 import kotlinx.android.synthetic.main.activity_message_hint.*
 import java.util.*
 
@@ -103,7 +104,8 @@ class MessageHintActivity : AppCompatActivity() {
             override fun run() {
                 val time = Calendar.getInstance()
                 val hour = time.get(Calendar.HOUR_OF_DAY)
-                if (hour in Config.doNotDisturbRange) {
+                val (b, e) = Config.doNotDisturbRange
+                if (inTimeRange(hour, b, e)) {
                     Log.d("Debug :", "checkNeeded  ----> 进入勿扰时间段 $hour")
                     exit()
                 }

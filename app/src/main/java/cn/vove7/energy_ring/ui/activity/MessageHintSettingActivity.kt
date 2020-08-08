@@ -3,6 +3,9 @@ package cn.vove7.energy_ring.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import cn.vove7.energy_ring.R
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.NotificationListener
@@ -12,7 +15,9 @@ import cn.vove7.smartkey.get
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
+import com.afollestad.materialdialogs.customview.customView
 import kotlinx.android.synthetic.main.activity_message_hint_setting.*
+import kotlinx.android.synthetic.main.range_picker.view.*
 import kotlin.math.ceil
 
 /**
@@ -46,8 +51,16 @@ class MessageHintSettingActivity : BaseActivity() {
             startActivityForResult(Intent(this, MessageHintActivity::class.java), 10)
         }
         showTips()
+        refreshDoNotDisturbRange()
     }
 
+    private fun refreshDoNotDisturbRange() {
+        val r = Config.doNotDisturbRange
+        do_not_disturb_time_view.text = getString(
+                R.string.do_not_disturb_time_s,
+                "${r.first}:00-${r.second}:00"
+        )
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -106,6 +119,37 @@ class MessageHintSettingActivity : BaseActivity() {
     private fun refreshStatusButton() {
         service_status_button.isSelected = NotificationListener.isOpen
         service_status_button.text = if (service_status_button.isSelected) "停止服务" else "开启服务"
+    }
+
+    /**
+     * 选取勿扰时间段
+     * todo: 支持 23:00-5:00
+     * @param view View
+     */
+    @Suppress("UNUSED_PARAMETER")
+    fun pickTimeRange(view: View) {
+        MaterialDialog(this).show {
+            title(R.string.do_not_disturb_time)
+            val v = LayoutInflater.from(this@MessageHintSettingActivity)
+                    .inflate(R.layout.range_picker, null)
+            this.customView(view = v)
+            v.range_slider.stepSize = 1f
+            v.range_slider.valueFrom = 0f
+            v.range_slider.valueTo = 23f
+
+            var r = Config.doNotDisturbRange
+            v.range_slider.addOnChangeListener { slider, value, _ ->
+                Log.d("Debug :", "pickTimeRange  ----> $value ${slider.values}")
+                r = slider.values.let { it[0].toInt() to it[1].toInt() }
+                v.range_text.text = "${r.first}:00-${r.second}:00"
+            }
+            v.range_slider.values = listOf(r.first.toFloat(), r.second.toFloat())
+            positiveButton {
+                Config.doNotDisturbRange = r
+                refreshDoNotDisturbRange()
+            }
+            negativeButton()
+        }
     }
 
 //    fun getAllApps() = thread {

@@ -29,16 +29,33 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text="当在熄屏有新通知时，5秒后呼吸灯闪烁\n双击亮屏\n勿扰时段：00:00-07:00\n双击亮屏时人脸解锁可能无法使用\n暂时仅支持主流聊天软件" />
+        android:text="@string/flash_ring_hint1" />
+
+    <TextView
+        android:id="@+id/do_not_disturb_time_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:onClick="pickTimeRange"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        tools:text="勿扰时段：00:00-07:00" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="@string/flash_ring_hint2" />
 
     <TextView
         android:id="@+id/service_status_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:background="@drawable/bg_service_status_button"
         android:drawableStart="@drawable/ic_service_status_selector"
         android:drawablePadding="10dp"
