@@ -17,6 +17,8 @@
 
 [酷安 Coolapk](https://coolapk.com/apk/cn.vove7.energy_ring)
 
+[Google Play](https://play.google.com/store/apps/details?id=cn.vove7.energy_ring)
+
 ## 预览(Screenshot)
 
 <img src="http://image.coolapk.com/apk_image/2020/0513/16/qq_pic_merged_1589357121114-262838-o_1e86h2gr44k122epft1fk418e411-uid-1090701@1440x841.jpg" width="400"/>
