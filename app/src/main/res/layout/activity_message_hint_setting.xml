@@ -67,6 +67,6 @@
         android:paddingBottom="10dp"
         android:textColor="@color/service_status"
         android:textSize="15sp"
-        tools:text="开启服务" />
+        tools:text="@string/enable_service" />
 
 </LinearLayout>
