@@ -45,7 +45,7 @@ val screenWidth: Int get() = screenSize.width
 val screenHeight: Int get() = screenSize.height
 
 
-fun pickColor(context: Context, initColor: Int? = null, title: String = "选取颜色", onColorPick: (color: Int) -> Unit) {
+fun pickColor(context: Context, initColor: Int? = null, title: String =  context.getString(R.string.pick_color), onColorPick: (color: Int) -> Unit) {
     val colors = mainColors
     MaterialDialog(context).show {
         title(text = title)

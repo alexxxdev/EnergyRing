@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="how_to_hide_in_recent">如何在最近任務隱藏？</string>
+	<string name="help_to_hide_in_recent">通過按返回鍵退出就可以從最近任務隱藏。\n為了後臺能力，先在此進入最近任務，將此卡片上鎖。</string>
+	<string name="i_know">我知道了</string>
+	<string name="pre_set">預設</string>
+	<string name="ring_width">線條粗細</string>
+	<string name="size">大小</string>
+	<string name="position_of_vertical">垂直位置</string>
+	<string name="position_of_horizontal">水准位置</string>
+	<string name="model_preset">預設機型</string>
+	<string name="copy">複製</string>
+	<string name="import_from_clipboard">從剪切板導入</string>
+	<string name="view_config">查看（保存）</string>
+	<string name="text_import">導入</string>
+	<string name="clipboard_content">剪切板內容</string>
+	<string name="empty_in_clipboard">前切板無內容</string>
+	<string name="about">關於</string>
+	<string name="support">支持一下</string>
+	<string name="hint_preset_share">歡迎將配寘分享至酷安評論區，底部[查看]按鈕可複製配寘\n下麵機型並不一定完全適配，可自行微調。</string>
+	<string name="config_data">配寘數據</string>
+	<string name="way_support">支持管道</string>
+	<string name="hint_wx_donate">請截圖後使用微信掃碼</string>
+	<string name="request_float_window_permission">請開啟懸浮窗許可權</string>
+	<string name="author">作者</string>
+	<string name="no_browser_available">無可用瀏覽器</string>
+	<string name="alipay_is_not_installed">未安裝支付寶</string>
+	<string name="auto_hide_on_rotate">[荧幕方向切換]自動隱藏</string>
+	<string name="auto_hide_on_fullscreen">[全屏]自動隱藏</string>
+	<string name="multi_color_setting">顏色設定（長按删除）</string>
+	<string name="single_color_setting">顏色設定</string>
+	<string name="ring_bg_color">背景色</string>
+	<string name="rotate_speed_when_charging">轉速[充電時]</string>
+	<string name="rotate_speed_not_charging">轉速[未充電，最左邊不旋轉]</string>
+	<string name="save_current_config">保存當前配寘</string>
+	<string name="welcome_to_share_on_comment_area">歡迎分享至評論區</string>
+	<string name="display_only_this_model">僅顯示本機型</string>
+	<string name="config_title">顯示標題</string>
+	<string name="edit">編輯</string>
+	<string name="edit_local_config">本地配寘編輯</string>
+	<string name="delete_selected">删除選中</string>
+	<string name="type_ring">圓形</string>
+	<string name="type_pill">藥丸</string>
+	<string name="type_double_ring">雙孔</string>
+	<string name="config_import_and_save">導入並保存</string>
+	<string name="spacing">間距</string>
+	<string name="main_color">主色</string>
+	<string name="height">高度</string>
+	<string name="double_ring_function">圓環功能</string>
+	<string name="battery_direction_format">電池方向：%s</string>
+	<string name="feature_of_secondary_ring">第二圓環功能：%s</string>
+	<string name="close">關閉</string>
+	<string name="foreground_service_title">Energy Ring前臺服務（可長按關閉通知）</string>
+	<string name="color_mode">顏色模式</string>
+	<string name="not_support_current_mode">暫不支持當前形狀</string>
+	<string name="force_refresh">強制重繪</string>
+	<string name="label_notification_service">Energy Ring通知服務</string>
+	<string name="desc_acc">開啟後可不在通知欄顯示懸浮窗通知</string>
+	<string name="setting_screen_off_remind">熄屏提醒設定</string>
+	<string name="prompt">提示</string>
+	<string name="preview">預覽</string>
+	<string name="flash_light_on_screen_off">熄屏光環提醒[實驗]</string>
+	<string name="hint_color_pick_dialog">左滑可自定義顏色及透明度</string>
+	<string name="open_link">打開連結</string>
+	<string name="please_open_notification_service">請開啟通知服務</string>
+	<string name="jump_failed_please_open_notification_service_by_manual">跳轉失敗，請手動進入設定開啟通知許可權</string>
+	<string name="double_click_to_exit">按兩下退出</string>
+	<string name="do_not_disturb_time">勿擾時段</string>
+	<string name="do_not_disturb_time_s">勿擾時段：%s</string>
+	<string name="flash_ring_hint2">按兩下亮屏時人臉解鎖可能無法使用\n暫時僅支持主流聊天軟體</string>
+	<string name="flash_ring_hint1">當在熄屏有新通知時，5秒後呼吸燈閃爍\n按兩下亮屏</string>
+	<string name="about_msg">電量訓示環 \n- 全屏自動隱藏（跟隨狀態列）\n- 橫屏自動隱藏 \n- 充電動畫\n- 熄屏通知提醒\n- 不受分辯率影響（2k/1080p）\n某些時候會出現“凍結”情况，更改内容圓環不會變化，可以在選單強制重繪或切換形狀。\n【此應用完全免費】</string>
+	<string name="pick_color">選取顏色</string>
+	<string name="enable_service">開啟服務</string>
+	<string name="import_failed">導入失敗</string>
+	<string name="import_config_hint">格式錯誤，請僅保留 {…} 中的內容</string>
+
+	<string-array name="way_of_support">
+		<item>支付寶</item>
+		<item>微信</item>
+		<item>在Github Star倉庫</item>
+	</string-array>
+	<string-array name="ring_features">
+		<item>記憶體使用情况</item>
+	</string-array>
+	<string-array name="double_ring_battery_direction">
+		<item>左邊</item>
+		<item>右邊</item>
+	</string-array>
+	<string-array name="modes_of_color">
+		<item>純色漸變</item>
+		<item>純色</item>
+		<item>均勻漸變</item>
+	</string-array>
+
+</resources>

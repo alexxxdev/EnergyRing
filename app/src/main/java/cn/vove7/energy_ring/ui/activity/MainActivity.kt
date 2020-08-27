@@ -33,6 +33,7 @@ import com.afollestad.materialdialogs.list.listItems
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonSyntaxException
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.ceil
 
@@ -271,7 +272,7 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
             it.getItemAt(it.itemCount - 1).text
         }
         if (content == null) {
-            Toast.makeText(content, R.string.empty_in_clipboard, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.empty_in_clipboard, Toast.LENGTH_SHORT).show()
             return
         }
         MaterialDialog(this).show {
@@ -295,35 +296,36 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
                 saveConfig(it, it.name)
             }
         }.onFailure {
-            App.toast(it.message ?: "导入失败")
+            if (it is JsonSyntaxException) {
+                App.toast(R.string.import_config_hint, Toast.LENGTH_LONG)
+            } else {
+                App.toast(it.message ?: getString(R.string.import_failed))
+            }
         }
     }
 
     private fun showAbout() {
         MaterialDialog(this).show {
             title(R.string.about)
-            message(
-                    text = """电量指示环
-                    |- 全屏自动隐藏（跟随状态栏）
-                    |- 横屏自动隐藏
-                    |- 充电动画
-                    |- 熄屏通知提醒
-                    |- 不受分辨率影响(2k/1080p)
-                    |
-                    |某些时候会出现“冻结”情况，更改属性 圆环不会变化，可以在菜单强制刷新或切换形状。
-                    |【此应用完全免费】
-                    |""".trimMargin())
+            message(R.string.about_msg)
             negativeButton(R.string.author) {
-                try {
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    intent.data = Uri.parse("https://coolapk.com/u/1090701")
-                    context.startActivity(intent)
-                } catch (e: ActivityNotFoundException) {
-                    Toast.makeText(this@MainActivity, R.string.no_browser_available, Toast.LENGTH_SHORT).show()
-                }
+                openLink("https://coolapk.com/u/1090701")
+            }
+            neutralButton(text = "Github") {
+                openLink("https://www.github.com/Vove7/EnergyRing")
             }
             positiveButton(R.string.support, click = ::donate)
+        }
+    }
+
+    private fun openLink(link: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.data = Uri.parse(link)
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this@MainActivity, R.string.no_browser_available, Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -1,0 +1,94 @@
+<resources>
+    <string name="how_to_hide_in_recent">如何在最近任务隐藏？</string>
+    <string name="help_to_hide_in_recent">通过按返回键退出就可以从最近任务隐藏。\n为了后台能力，先在此进入最近任务，将此卡片上锁。</string>
+    <string name="i_know">我知道了</string>
+    <string name="pre_set">预设</string>
+    <string name="ring_width">线条粗细</string>
+    <string name="size">大小</string>
+    <string name="position_of_vertical">垂直位置</string>
+    <string name="position_of_horizontal">水平位置</string>
+    <string name="model_preset">预设机型</string>
+    <string name="copy">复制</string>
+    <string name="import_from_clipboard">从剪切板导入</string>
+    <string name="view_config">查看(保存)</string>
+    <string name="text_import">导入</string>
+    <string name="clipboard_content">剪切板内容</string>
+    <string name="empty_in_clipboard">前切板无内容</string>
+    <string name="about">关于</string>
+    <string name="support">支持一下</string>
+    <string name="hint_preset_share">欢迎将配置分享至酷安评论区，底部[查看]按钮可复制配置\n下面机型并不一定完全适配，可自行微调。</string>
+    <string name="config_data">配置数据</string>
+    <string name="way_support">支持方式</string>
+    <string name="hint_wx_donate">请截屏后使用微信扫码</string>
+    <string name="request_float_window_permission">请开启悬浮窗权限</string>
+    <string name="author">作者</string>
+    <string name="no_browser_available">无可用浏览器</string>
+    <string name="alipay_is_not_installed">未安装支付宝</string>
+    <string name="auto_hide_on_rotate">[屏幕方向切换]自动隐藏</string>
+    <string name="auto_hide_on_fullscreen">[全屏]自动隐藏</string>
+    <string name="multi_color_setting">颜色设置(长按删除)</string>
+    <string name="single_color_setting">颜色设置</string>
+    <string name="ring_bg_color">背景色</string>
+    <string name="rotate_speed_when_charging">转速[充电时]</string>
+    <string name="rotate_speed_not_charging">转速[未充电, 最左边不旋转]</string>
+    <string name="save_current_config">保存当前配置</string>
+    <string name="welcome_to_share_on_comment_area">欢迎分享至评论区</string>
+    <string name="display_only_this_model">仅显示本机型</string>
+    <string name="config_title">显示标题</string>
+    <string name="edit">编辑</string>
+    <string name="edit_local_config">本地配置编辑</string>
+    <string name="delete_selected">删除选中</string>
+    <string name="type_ring">圆形</string>
+    <string name="type_pill">药丸</string>
+    <string name="type_double_ring">双孔</string>
+    <string name="config_import_and_save">导入并保存</string>
+    <string name="spacing">间距</string>
+    <string name="main_color">主色</string>
+    <string name="height">高度</string>
+    <string name="double_ring_function">圆环功能</string>
+    <string name="battery_direction_format">电池方向：%s</string>
+    <string name="feature_of_secondary_ring">第二圆环功能： %s</string>
+    <string name="close">关闭</string>
+    <string name="foreground_service_title">Energy Ring 前台服务(可长按关闭通知)</string>
+    <string name="color_mode">颜色模式</string>
+    <string name="not_support_current_mode">暂不支持当前形状</string>
+    <string name="force_refresh">强制刷新</string>
+    <string name="label_notification_service">Energy Ring 通知服务</string>
+    <string name="desc_acc">开启后可不在通知栏显示悬浮窗通知</string>
+    <string name="setting_screen_off_remind">熄屏提醒设置</string>
+    <string name="prompt">提示</string>
+    <string name="preview">预览</string>
+    <string name="flash_light_on_screen_off">熄屏光环提醒[实验]</string>
+    <string name="hint_color_pick_dialog">左滑可自定义颜色及透明度</string>
+    <string name="open_link">打开链接</string>
+    <string name="please_open_notification_service">请开启通知服务</string>
+    <string name="jump_failed_please_open_notification_service_by_manual">跳转失败，请手动进入设置开启通知权限</string>
+    <string name="double_click_to_exit">双击退出</string>
+    <string name="do_not_disturb_time">勿扰时段</string>
+    <string name="do_not_disturb_time_s">勿扰时段：%s</string>
+    <string name="flash_ring_hint2">双击亮屏时人脸解锁可能无法使用\n暂时仅支持主流聊天软件</string>
+    <string name="flash_ring_hint1">当在熄屏有新通知时，5秒后呼吸灯闪烁\n双击亮屏</string>
+    <string name="about_msg">电量指示环 \n- 全屏自动隐藏（跟随状态栏） \n- 横屏自动隐藏 \n- 充电动画 \n- 熄屏通知提醒 \n- 不受分辨率影响(2k/1080p) \n某些时候会出现“冻结”情况，更改属性 圆环不会变化，可以在菜单强制刷新或切换形状。 \n【此应用完全免费】</string>
+    <string name="pick_color">选取颜色</string>
+    <string name="enable_service">开启服务</string>
+    <string name="import_failed">导入失败</string>
+    <string name="import_config_hint">格式错误，请仅保留 {…} 中的内容</string>
+
+    <string-array name="way_of_support">
+        <item>支付宝</item>
+        <item>微信</item>
+        <item>在 Github Star 仓库</item>
+    </string-array>
+    <string-array name="ring_features">
+        <item>内存使用情况</item>
+    </string-array>
+    <string-array name="double_ring_battery_direction">
+        <item>左边</item>
+        <item>右边</item>
+    </string-array>
+    <string-array name="modes_of_color">
+        <item>纯色渐变</item>
+        <item>纯色</item>
+        <item>均匀渐变</item>
+    </string-array>
+</resources>

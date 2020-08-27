@@ -11,15 +11,14 @@ if (localPropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "cn.vove7.energy_ring"
         minSdkVersion 23
-        targetSdkVersion 29
-        versionCode 20501
-        versionName "2.5.1"
+        targetSdkVersion 30
+        versionCode 20502
+        versionName "2.5.2"
 
     }
 
