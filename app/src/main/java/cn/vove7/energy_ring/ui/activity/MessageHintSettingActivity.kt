@@ -77,13 +77,7 @@ class MessageHintSettingActivity : BaseActivity() {
             title(R.string.prompt)
             cancelable(false)
             cancelOnTouchOutside(false)
-            message(text = """
-                |熄屏通知提醒。
-                
-                |需要通知权限和无障碍
-                |呼吸灯闪烁时，双击亮屏。
-                |双击亮屏时人脸解锁可能无法使用。
-                """.trimMargin())
+            message(R.string.screenoff_reminder_hint)
 
             noAutoDismiss()
             positiveButton(text = "10s")
@@ -143,6 +137,7 @@ class MessageHintSettingActivity : BaseActivity() {
                 r = slider.values.let { it[0].toInt() to it[1].toInt() }
                 v.range_text.text = "${r.first}:00-${r.second}:00"
             }
+            v.range_slider.setSupportReverse(true)
             v.range_slider.values = listOf(r.first.toFloat(), r.second.toFloat())
             positiveButton {
                 Config.doNotDisturbRange = r

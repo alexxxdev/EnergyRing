@@ -85,8 +85,9 @@ class NotificationListener : NotificationListenerService() {
         val hour = time.get(Calendar.HOUR_OF_DAY)
         val (begin, end) = Config.doNotDisturbRange
 
+        Log.d("Debug :", "checkNeeded  ----> 勿扰时间段 $begin-$end $hour")
         if (inTimeRange(hour, begin, end)) {
-            Log.d("Debug :", "checkNeeded  ----> 勿扰时间段 $hour")
+            Log.d("Debug :", "checkNeeded  ----> 在勿扰时间段 不通知 $hour")
             return null
         }
         return Unit
@@ -147,6 +148,7 @@ class NotificationListener : NotificationListenerService() {
         Log.d("Debug :", "showHint  ----> 屏幕关闭 -> 通知")
         startActivity(Intent(this, MessageHintActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
         })
     }
 

@@ -73,6 +73,7 @@
     <string name="enable_service">开启服务</string>
     <string name="import_failed">导入失败</string>
     <string name="import_config_hint">格式错误，请仅保留 {…} 中的内容</string>
+    <string name="screenoff_reminder_hint">熄屏通知提醒。\n需要通知权限和无障碍\n呼吸灯闪烁时，双击亮屏。\n双击亮屏时人脸解锁可能无法使用。</string>
 
     <string-array name="way_of_support">
         <item>支付宝</item>
