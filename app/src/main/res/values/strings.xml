@@ -77,6 +77,7 @@
     <string name="import_failed">Import failed</string>
     <string name="import_config_hint">Format error, please keep only the contents in {…}</string>
     <string name="screenoff_reminder_hint">Screen-off Reminder\n It\'s need to notification permission. When the breathing light flashes, double-click to light up the screen. \n When you double-click the bright screen, the face unlock may not work.</string>
+    <string name="auto_hide_in_power_saving_mode">Auto hide in power-saving-mode</string>
 
     <string-array name="way_of_support">
         <item>Alipay</item>

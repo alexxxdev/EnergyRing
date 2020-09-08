@@ -76,8 +76,9 @@
 	<string name="import_failed">導入失敗</string>
 	<string name="import_config_hint">格式錯誤，請僅保留 {…} 中的內容</string>
 	<string name="screenoff_reminder_hint">熄屏通知提醒。\n需要通知許可權和無障礙\n呼吸燈閃爍時，按兩下亮屏。\n按兩下亮屏時人臉解鎖可能無法使用。</string>
+    <string name="auto_hide_in_power_saving_mode">省電模式自動隱藏</string>
 
-	<string-array name="way_of_support">
+    <string-array name="way_of_support">
 		<item>支付寶</item>
 		<item>微信</item>
 		<item>在Github Star倉庫</item>

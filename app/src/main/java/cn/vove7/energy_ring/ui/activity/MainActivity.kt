@@ -67,6 +67,7 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
         menu_view.overflowIcon = getDrawable(R.drawable.ic_settings)
         menu_view.menu.findItem(R.id.rotate_auto_hide).isChecked = Config.autoHideRotate
         menu_view.menu.findItem(R.id.fullscreen_auto_hide).isChecked = Config.autoHideFullscreen
+        menu_view.menu.findItem(R.id.auto_hide_in_power_save_mode).isChecked = Config.powerSaveHide
         refreshMenu()
         checkNotificationService()
     }
@@ -121,6 +122,17 @@ class MainActivity : BaseActivity(), ActionMenuView.OnMenuItemClickListener {
                     RotationListener.start()
                 } else {
                     RotationListener.stop()
+                }
+            }
+            R.id.auto_hide_in_power_save_mode -> {
+                Config.powerSaveHide = !Config.powerSaveHide
+                item.isChecked = Config.powerSaveHide
+                //省电中 开启
+                if (App.powerManager.isPowerSaveMode && Config.powerSaveHide) {
+                    FloatRingWindow.hide()
+                }
+                if (!Config.powerSaveHide) {
+                    FloatRingWindow.show()
                 }
             }
         }

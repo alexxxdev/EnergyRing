@@ -42,6 +42,9 @@ object Config : BaseConfig {
     //粗细百分比
     var strokeWidthF by smartKey(12f)
 
+    //省电模式自动隐藏
+    var powerSaveHide by smartKey(false)
+
     var colors by smartKey(
             intArrayOf(
                     "#ff00e676".asColor,

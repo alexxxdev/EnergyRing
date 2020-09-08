@@ -1,6 +1,5 @@
 package cn.vove7.energy_ring.floatwindow
 
-import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
@@ -77,19 +76,18 @@ object FloatRingWindow {
     var isShowing = false
     private val layoutParams: WindowManager.LayoutParams
         get() = WindowManager.LayoutParams(
-            -2, -2,
-            Config.posX, Config.posY,
-            when {
-                AccService.hasOpend -> WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-                else -> WindowManager.LayoutParams.TYPE_PHONE
-            },
-            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
-                    WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR or
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-            , 0
+                -2, -2,
+                Config.posX, Config.posY,
+                when {
+                    AccService.hasOpend -> WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                    else -> WindowManager.LayoutParams.TYPE_PHONE
+                },
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                        WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR or
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, 0
         ).apply {
             format = PixelFormat.RGBA_8888
             gravity = Gravity.TOP or Gravity.START
@@ -204,8 +202,13 @@ object FloatRingWindow {
         if (!hasPermission || isShowing) {
             return false
         }
-        return (Config.autoHideRotate && RotationListener.canShow) &&
-                (Config.autoHideFullscreen && !FullScreenListenerFloatWin.isFullScreen)
+        val cond1 = Config.autoHideRotate && RotationListener.canShow
+        val cond2 = Config.autoHideFullscreen && !FullScreenListenerFloatWin.isFullScreen
+        val cond3 = !Config.powerSaveHide || !App.powerManager.isPowerSaveMode
+
+        Log.d("Debug :", "canShow  ----> 旋转: $cond1 全屏: $cond2 省电: $cond3")
+
+        return cond1 && cond2 && cond3
 
     }
 

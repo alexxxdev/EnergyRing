@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import cn.vove7.energy_ring.floatwindow.FloatRingWindow
 import cn.vove7.energy_ring.listener.PowerEventReceiver
+import cn.vove7.energy_ring.listener.PowerSaveModeListener
 import cn.vove7.energy_ring.listener.RotationListener
 import cn.vove7.energy_ring.listener.ScreenListener
 import cn.vove7.energy_ring.util.Config
@@ -58,6 +59,7 @@ class App : Application() {
         if (Config.autoHideRotate) {
             RotationListener.start()
         }
+        PowerSaveModeListener.start(this)
 
         val foreService = Intent(this, ForegroundService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
